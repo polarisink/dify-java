@@ -6,7 +6,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import static com.github.polarisink.dify.Consts.KEY_PREFIX;
+import static com.github.polarisink.dify.DifyConsts.KEY_PREFIX;
+
 
 /**
  * 基础的difyClient

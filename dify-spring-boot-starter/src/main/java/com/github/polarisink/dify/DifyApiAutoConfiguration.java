@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 
-import static com.github.polarisink.dify.Consts.KEY_PREFIX;
+import static com.github.polarisink.dify.DifyConsts.KEY_PREFIX;
 
 /**
  * dify-api配置
