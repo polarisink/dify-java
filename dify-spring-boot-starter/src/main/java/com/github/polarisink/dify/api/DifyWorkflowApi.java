@@ -1,12 +1,8 @@
 package com.github.polarisink.dify.api;
 
-import com.github.polarisink.dify.response.DifyPageResponse;
 import com.github.polarisink.dify.request.DifyUserRequest;
 import com.github.polarisink.dify.request.DifyWorkflowRequest;
-import com.github.polarisink.dify.response.DifyResult;
-import com.github.polarisink.dify.response.DifyWorkflow;
-import com.github.polarisink.dify.response.DifyWorkflowData;
-import com.github.polarisink.dify.response.DifyWorkflowLog;
+import com.github.polarisink.dify.response.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;

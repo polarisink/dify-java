@@ -1,10 +1,10 @@
 package com.github.polarisink.dify.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.polarisink.dify.response.ChunkCompletionResponse;
-import com.github.polarisink.dify.request.WorkflowRequest;
 import com.github.polarisink.dify.request.DifyChatRequest;
 import com.github.polarisink.dify.request.DifyWorkflowRequest;
+import com.github.polarisink.dify.request.WorkflowRequest;
+import com.github.polarisink.dify.response.ChunkCompletionResponse;
 import lombok.Builder;
 import reactor.core.publisher.Flux;
 

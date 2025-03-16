@@ -1,7 +1,6 @@
 package com.github.polarisink.dify.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.polarisink.dify.response.DifyPageResponse;
 import com.github.polarisink.dify.request.*;
 import com.github.polarisink.dify.response.*;
 import lombok.Builder;

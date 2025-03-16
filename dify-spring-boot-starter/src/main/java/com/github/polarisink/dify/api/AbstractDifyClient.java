@@ -6,9 +6,9 @@ import static com.github.polarisink.dify.DifyConsts.KEY_PREFIX;
  * dify基础client
  */
 abstract class AbstractDifyClient {
+    protected String authorization;
     private String baseUrl;
     private String token;
-    protected String authorization;
 
     public AbstractDifyClient(String baseUrl, String token) {
         //对baseUrl进行基础校验
