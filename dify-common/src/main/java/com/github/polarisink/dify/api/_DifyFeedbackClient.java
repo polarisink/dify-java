@@ -5,6 +5,8 @@ import com.github.polarisink.dify.response.DifyResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
+import static com.github.polarisink.dify.api.DifyRoutes.MESSAGE_FEEDBACK;
+
 @RequiredArgsConstructor
 class _DifyFeedbackClient implements _DifyFeedbackApi {
     private final RestClient restClient;

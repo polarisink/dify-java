@@ -19,6 +19,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.github.polarisink.dify.api.DifyRoutes.*;
+
 @Slf4j
 public class DifyChatClient extends BaseDifyClient implements DifyChatApi {
 
@@ -36,42 +38,42 @@ public class DifyChatClient extends BaseDifyClient implements DifyChatApi {
 
     @Override
     public DifyChat chat(DifyChatRequest paramMessage) {
-        return restClient.post().uri("/chat-messages").body(paramMessage).retrieve().body(DifyChat.class);
+        return restClient.post().uri(CHAT_MESSAGES).body(paramMessage).retrieve().body(DifyChat.class);
     }
 
     @Override
     public DifyResult stopTask(String taskId, DifyUserRequest userRequest) {
-        return restClient.post().uri("/chat-messages/{taskId}/stop", taskId).body(userRequest).retrieve().body(DifyResult.class);
+        return restClient.post().uri(STOP_CHAT_MESSAGES, taskId).body(userRequest).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyResult suggestions(String messageId, String user) {
-        URI uri = UriComponentsBuilder.fromPath("/messages/{messageId}/suggested").queryParam("user", user).buildAndExpand(messageId).toUri();
+        URI uri = UriComponentsBuilder.fromPath(MESSAGES_SUGGESTED).queryParam("user", user).buildAndExpand(messageId).toUri();
         return restClient.post().uri(uri).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyPageResponse<DifyMessage> history(String user, String conversionId, String firstId, int limit) {
-        URI uri = UriComponentsBuilder.fromPath("/messages").queryParam("user", user).queryParam("conversion_id", conversionId).queryParam("first_id", firstId).queryParam("limit", limit).build().toUri();
+        URI uri = UriComponentsBuilder.fromPath(MESSAGES).queryParam("user", user).queryParam("conversion_id", conversionId).queryParam("first_id", firstId).queryParam("limit", limit).build().toUri();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
     }
 
     @Override
     public DifyPageResponse<DifyConversion> conversions(String user, String lastId, int limit, String sortBy) {
-        URI uri = UriComponentsBuilder.fromPath("/conversions").queryParam("user", user).queryParam("last_id", lastId).queryParam("sort_by", sortBy).queryParam("limit", limit).build().toUri();
+        URI uri = UriComponentsBuilder.fromPath(CONVERSIONS).queryParam("user", user).queryParam("last_id", lastId).queryParam("sort_by", sortBy).queryParam("limit", limit).build().toUri();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
     }
 
     @Override
     public DifyResult deleteConversation(String conversationId, DifyUserRequest userRequest) {
-        return restClient.method(HttpMethod.DELETE).uri("/conversations/{conversationId}", conversationId).body(userRequest).retrieve().body(DifyResult.class);
+        return restClient.method(HttpMethod.DELETE).uri(CONVERSION_BY_ID, conversationId).body(userRequest).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyConversion updateConversionName(String conversationId, DifyConversionRequest request) {
-        return restClient.post().uri("/conversations/{conversationId}/name", conversationId).body(request).retrieve().body(DifyConversion.class);
+        return restClient.post().uri(CONVERSION_NAME, conversationId).body(request).retrieve().body(DifyConversion.class);
     }
 
     @Override
@@ -80,12 +82,12 @@ public class DifyChatClient extends BaseDifyClient implements DifyChatApi {
             add("file", file);
             add("user", user);
         }};
-        return restClient.post().uri("/audio-to-text").contentType(MediaType.MULTIPART_FORM_DATA).body(map).retrieve().body(DifyAudioToText.class);
+        return restClient.post().uri(AUDIO_TO_TEXT).contentType(MediaType.MULTIPART_FORM_DATA).body(map).retrieve().body(DifyAudioToText.class);
     }
 
     @Override
     public DifyMeta meta() {
-        return restClient.post().uri("/meta").retrieve().body(DifyMeta.class);
+        return restClient.post().uri(META).retrieve().body(DifyMeta.class);
     }
 
     @Override

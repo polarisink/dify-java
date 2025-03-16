@@ -13,36 +13,13 @@ import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
+import static com.github.polarisink.dify.api.DifyRoutes.*;
+
 /**
  * dify知识库api
  */
 public interface DifyDatasetApi {
 
-    String CREATE_DOC_BY_TEXT = "/datasets/{datasetId}/document/create-by-text";
-    String CREATE_DOC_BY_FILE = "/datasets/{datasetId}/document/create-by-file";
-
-    String DATASETS = "/datasets";
-
-    String DATASETS_ID = "/datasets/{datasetId}";
-
-    String UPDATE_DOC_BY_TEXT = "/datasets/{datasetId}/documents/{documentId}/update-by-text";
-
-    String UPDATE_DOC_BY_FILE = "/datasets/{datasetId}/documents/{documentId}/update-by-file";
-
-    String DOC_INDEX_STATUS = "/datasets/{datasetId}/documents/{batch}/indexing-status";
-
-    String DELETE_DOC = "/datasets/{datasetId}/documents/{documentId}";
-
-    String PAGE_DOC = "/datasets/{datasetId}/documents";
-
-    String DOC_SEGMENT = "/datasets/{datasetId}/documents/{documentId}/segments";
-
-    String DOC_ADD_UPDATE_SEGMENT = "/datasets/{datasetId}/documents/{documentId}/segments/{segmentId}";
-
-    String DOC_UPLOAD_FILE = "/datasets/{datasetId}/documents/{documentId}/upload-file";
-
-
-    String DATASET_RETRIEVE = "/datasets/{datasetId}/retrieve";
 
     /**
      * 通过文本创建文档
@@ -188,7 +165,7 @@ public interface DifyDatasetApi {
      * @param segmentId  分段id
      * @return 是否成功
      */
-    @DeleteExchange(DOC_ADD_UPDATE_SEGMENT)
+    @DeleteExchange(DOC_DELETE_UPDATE_SEGMENT)
     DifyResult deleteSegment(@PathVariable String datasetId, @PathVariable String documentId, @PathVariable String segmentId);
 
     /**
@@ -199,7 +176,7 @@ public interface DifyDatasetApi {
      * @param segmentId  分段id
      * @return 结果
      */
-    @PostExchange(DOC_ADD_UPDATE_SEGMENT)
+    @PostExchange(DOC_DELETE_UPDATE_SEGMENT)
     DifySegmentWrapper updateSegment(@PathVariable String datasetId, @PathVariable String documentId, @PathVariable String segmentId, @RequestBody DifySegmentUpdateRequest request);
 
     /**

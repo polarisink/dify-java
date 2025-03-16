@@ -15,6 +15,8 @@ import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
+import static com.github.polarisink.dify.api.DifyRoutes.*;
+
 /**
  * dify聊天室接口
  */
@@ -27,7 +29,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param paramMessage message
      * @return 结果
      */
-    @PostExchange("/chat-messages")
+    @PostExchange(CHAT_MESSAGES)
     DifyChat chat(@RequestBody DifyChatRequest paramMessage);
 
     /**
@@ -36,7 +38,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param taskId      任务id
      * @param userRequest 用户
      */
-    @PostExchange("/chat-messages/{taskId}/stop")
+    @PostExchange(STOP_CHAT_MESSAGES)
     DifyResult stopTask(@PathVariable String taskId, @RequestBody DifyUserRequest userRequest);
 
     /**
@@ -45,7 +47,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param messageId 消息id
      * @param user      用户标识，由开发者定义规则，需保证用户标识在应用内唯一。
      */
-    @GetExchange("/messages/{messageId}/suggested")
+    @GetExchange(MESSAGES_SUGGESTED)
     DifyResult suggestions(@PathVariable String messageId, @RequestParam("user") String user);
 
 
@@ -59,7 +61,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param firstId      当前页第一条聊天记录的 ID，默认 null
      * @param limit        一次请求返回多少条聊天记录，默认 20 条。
      */
-    @GetExchange("/messages")
+    @GetExchange(MESSAGES)
     DifyPageResponse<DifyMessage> history(@RequestParam String user, @RequestParam(value = "conversion_id", required = false) String conversionId, @RequestParam(value = "first_id", required = false) String firstId, @RequestParam(defaultValue = "20", required = false) int limit);
 
 
@@ -71,7 +73,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param limit  （选填）一次请求返回多少条记录，默认 20 条，最大 100 条，最小 1 条。
      * @param sortBy （选填）排序字段，默认 -updated_at(按更新时间倒序排列)；可选值：created_at, -created_at, updated_at, -updated_at；字段前面的符号代表顺序或倒序，-代表倒序
      */
-    @GetExchange("/conversions")
+    @GetExchange(CONVERSIONS)
     DifyPageResponse<DifyConversion> conversions(@RequestParam String user, @RequestParam(value = "last_id", required = false) String lastId, @RequestParam(defaultValue = "20", required = false) int limit, @RequestParam(value = "sort_by", required = false) String sortBy);
 
     /**
@@ -81,7 +83,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param userRequest    用户
      * @return 结果
      */
-    @DeleteExchange("/conversations/{conversationId}")
+    @DeleteExchange(CONVERSION_BY_ID)
     DifyResult deleteConversation(@PathVariable String conversationId, @RequestBody DifyUserRequest userRequest);
 
     /**
@@ -93,7 +95,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param request        请求
      * @return 会话
      */
-    @PostExchange("/conversations/{conversationId}/name")
+    @PostExchange(CONVERSION_NAME)
     DifyConversion updateConversionName(@PathVariable String conversationId, @RequestBody DifyConversionRequest request);
 
     /**
@@ -103,7 +105,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param user 用户
      * @return 文字结果
      */
-    @PostExchange(value = "/audio-to-text", contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostExchange(value = AUDIO_TO_TEXT, contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
     DifyAudioToText audioToText(@RequestPart("file") Resource file, @RequestPart("user") String user);
 
     /**
@@ -113,7 +115,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      *
      * @return icon
      */
-    @PostExchange("/meta")
+    @PostExchange(META)
     DifyMeta meta();
 
 }

@@ -6,12 +6,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.service.annotation.PostExchange;
 
+import static com.github.polarisink.dify.api.DifyRoutes.UPLOAD_FILE;
+
 /**
  * 公共文件上传接口，包内可访问的接口
  */
 interface _DifyFileUploadApi {
 
-    String UPLOAD_FILE = "/files/upload";
 
     /**
      * 上传文件

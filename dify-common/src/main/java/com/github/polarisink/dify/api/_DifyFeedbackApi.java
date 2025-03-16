@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
 
+import static com.github.polarisink.dify.api.DifyRoutes.MESSAGE_FEEDBACK;
+
 /**
  * 公共反馈api
  */
 interface _DifyFeedbackApi {
 
-    String MESSAGE_FEEDBACK = "/messages/{messageId}/feedbacks";
 
     /**
      * 消息反馈（点赞）

@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.service.annotation.PostExchange;
 import reactor.core.publisher.Flux;
 
-import static com.github.polarisink.dify.api.DifyWorkflowApi.RUN_WORKFLOW;
+import static com.github.polarisink.dify.api.DifyRoutes.COMPLETION_MESSAGES;
+import static com.github.polarisink.dify.api.DifyRoutes.RUN_WORKFLOW;
 
 /**
  * dify流api
@@ -26,7 +27,7 @@ public interface DifySseApi {
      * @param token   token，需要以Bearer开头
      * @return flux结果
      */
-    @PostExchange(value = "/completion-messages", contentType = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostExchange(value = COMPLETION_MESSAGES, contentType = MediaType.TEXT_EVENT_STREAM_VALUE)
     Flux<ServerSentEvent<ChunkCompletionResponse>> chat(@RequestBody DifyChatRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String token);
 
     /**

@@ -8,6 +8,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
+import static com.github.polarisink.dify.api.DifyRoutes.UPLOAD_FILE;
+
 @RequiredArgsConstructor
 class _DifyFileUploadClient implements _DifyFileUploadApi {
     private final RestClient restClient;

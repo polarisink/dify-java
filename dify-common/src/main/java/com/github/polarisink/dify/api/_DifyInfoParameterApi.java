@@ -4,13 +4,14 @@ import com.github.polarisink.dify.response.DifyInfo;
 import com.github.polarisink.dify.response.DifyParameter;
 import org.springframework.web.service.annotation.GetExchange;
 
+import static com.github.polarisink.dify.api.DifyRoutes.INFO;
+import static com.github.polarisink.dify.api.DifyRoutes.PARAMETERS;
+
 /**
  * 公共信息和参数接口，包内可访问的接口
  */
 interface _DifyInfoParameterApi {
 
-    String INFO = "/info";
-    String PARAMETERS = "/parameters";
 
     /**
      * 用于获取应用的基本信息

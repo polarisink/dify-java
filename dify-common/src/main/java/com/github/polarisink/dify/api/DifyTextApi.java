@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
 
+import static com.github.polarisink.dify.api.DifyRoutes.COMPLETION_MESSAGES;
+import static com.github.polarisink.dify.api.DifyRoutes.STOP_MESSAGES;
+
 /**
  * dify文本api
  */
 public interface DifyTextApi extends _DifyFileUploadApi, _DifyInfoParameterApi, _DifyTextToAudioApi, _DifyFeedbackApi {
 
-    String COMPLETION_MESSAGES = "/completion-messages";
-
-    String STOP_MESSAGES = "/completion-messages/{taskId}/stop";
 
     /**
      * 发送消息

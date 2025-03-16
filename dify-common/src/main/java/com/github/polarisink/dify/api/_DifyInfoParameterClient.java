@@ -5,6 +5,9 @@ import com.github.polarisink.dify.response.DifyParameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestClient;
 
+import static com.github.polarisink.dify.api.DifyRoutes.INFO;
+import static com.github.polarisink.dify.api.DifyRoutes.PARAMETERS;
+
 @RequiredArgsConstructor
 class _DifyInfoParameterClient implements _DifyInfoParameterApi {
     private final RestClient restClient;

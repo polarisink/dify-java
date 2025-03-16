@@ -13,17 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
+import static com.github.polarisink.dify.api.DifyRoutes.*;
+
 /**
  * dify工作流api
  */
 public interface DifyWorkflowApi extends _DifyFileUploadApi, _DifyInfoParameterApi {
-
-    String RUN_WORKFLOW = "/workflows/run";
-    String WORKFLOW_INFO = "/workflows/run/{workflowId}";
-
-    String STOP_WORKFLOW = "/workflows/run/{workflowId}";
-
-    String WORKFLOW_LOGS = "/workflows/logs";
 
     /**
      * 执行 workflow

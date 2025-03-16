@@ -14,6 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.github.polarisink.dify.api.DifyRoutes.*;
+
 public class DifyDatasetClient extends BaseDifyClient implements DifyDatasetApi {
 
     @Builder
@@ -100,17 +102,17 @@ public class DifyDatasetClient extends BaseDifyClient implements DifyDatasetApi 
 
     @Override
     public DifyResult deleteSegment(String datasetId, String documentId, String segmentId) {
-        return restClient.delete().uri(DOC_ADD_UPDATE_SEGMENT, datasetId, documentId, segmentId).retrieve().body(DifyResult.class);
+        return restClient.delete().uri(DOC_DELETE_UPDATE_SEGMENT, datasetId, documentId, segmentId).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifySegmentWrapper updateSegment(String datasetId, String documentId, String segmentId, DifySegmentUpdateRequest request) {
-        return restClient.post().uri(DOC_ADD_UPDATE_SEGMENT, datasetId, documentId, segmentId).body(request).retrieve().body(DifySegmentWrapper.class);
+        return restClient.post().uri(DOC_DELETE_UPDATE_SEGMENT, datasetId, documentId, segmentId).body(request).retrieve().body(DifySegmentWrapper.class);
     }
 
     @Override
     public DifyFile getUploadFile(String datasetId, String documentId) {
-        return restClient.get().uri(DOC_ADD_UPDATE_SEGMENT, datasetId, documentId).retrieve().body(DifyFile.class);
+        return restClient.get().uri(DOC_DELETE_UPDATE_SEGMENT, datasetId, documentId).retrieve().body(DifyFile.class);
     }
 
     @Override
