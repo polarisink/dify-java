@@ -7,6 +7,9 @@ import org.springframework.web.client.RestClient;
 
 import static com.github.polarisink.dify.DifyConsts.AUDIO_WAV;
 
+/**
+ * 文本转语音客户端
+ */
 @RequiredArgsConstructor
 public class _DifyTextToAudioClient implements _DifyTextToAudioApi {
     private final RestClient restClient;

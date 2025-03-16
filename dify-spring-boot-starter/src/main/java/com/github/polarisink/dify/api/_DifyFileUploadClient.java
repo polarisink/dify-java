@@ -10,6 +10,9 @@ import org.springframework.web.client.RestClient;
 
 import static com.github.polarisink.dify.api.DifyRoutes.UPLOAD_FILE;
 
+/**
+ * 文件上传客户端
+ */
 @RequiredArgsConstructor
 class _DifyFileUploadClient implements _DifyFileUploadApi {
     private final RestClient restClient;

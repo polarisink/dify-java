@@ -7,6 +7,9 @@ import org.springframework.web.client.RestClient;
 
 import static com.github.polarisink.dify.api.DifyRoutes.MESSAGE_FEEDBACK;
 
+/**
+ * 反馈接口实现
+ */
 @RequiredArgsConstructor
 class _DifyFeedbackClient implements _DifyFeedbackApi {
     private final RestClient restClient;

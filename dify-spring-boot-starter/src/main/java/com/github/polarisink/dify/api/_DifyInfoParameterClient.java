@@ -8,6 +8,9 @@ import org.springframework.web.client.RestClient;
 import static com.github.polarisink.dify.api.DifyRoutes.INFO;
 import static com.github.polarisink.dify.api.DifyRoutes.PARAMETERS;
 
+/**
+ * 信息参数接口实现
+ */
 @RequiredArgsConstructor
 class _DifyInfoParameterClient implements _DifyInfoParameterApi {
     private final RestClient restClient;
