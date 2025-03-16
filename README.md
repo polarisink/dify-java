@@ -42,6 +42,7 @@ Dify API 密钥（从平台控制台获取）
 - 项目基于webflux编写，需要注意处理和web的冲突
 - 如果是普通spring-web项目，则在Spring主类中添加`@SpringBootApplication(exclude = WebFluxAutoConfiguration.class)`
 - 如果是spring-web项目则正常使用
+- 如果在非spring环境中使用则不能使用api系列接口，只能手动构建DifyXXXClient使用
 
 ### 2. 使用
 
