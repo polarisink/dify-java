@@ -1,7 +1,7 @@
 package com.github.polarisink.dify.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.polarisink.dify.DifyPageResponse;
+import com.github.polarisink.dify.response.DifyPageResponse;
 import com.github.polarisink.dify.request.DifyChatRequest;
 import com.github.polarisink.dify.request.DifyConversionRequest;
 import com.github.polarisink.dify.request.DifyFeedbackRequest;
@@ -22,7 +22,7 @@ import java.net.URI;
 import static com.github.polarisink.dify.api.DifyRoutes.*;
 
 @Slf4j
-public class DifyChatClient extends BaseDifyClient implements DifyChatApi {
+public class DifyChatClient extends AbstractDifyRestClient implements DifyChatApi {
 
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;

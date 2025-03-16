@@ -1,9 +1,10 @@
-package com.github.polarisink.dify;
+package com.github.polarisink.dify.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.polarisink.dify.api.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ public class DifyApiAutoConfiguration {
      * @return 想定远程服务
      */
     @Bean
+    @ConditionalOnMissingBean(DifyChatApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "chat-key")
     public DifyChatApi difyChatApi() {
         return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), objectMapper, difyInterceptor(difyProperties.getChatKey()), DifyChatApi.class);
@@ -41,6 +43,7 @@ public class DifyApiAutoConfiguration {
      * @return 想定远程服务
      */
     @Bean
+    @ConditionalOnMissingBean(DifyDatasetApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "dataset-key")
     public DifyDatasetApi difyDatasetApi() {
         return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), objectMapper, difyInterceptor(difyProperties.getDatasetKey()), DifyDatasetApi.class);
@@ -52,6 +55,7 @@ public class DifyApiAutoConfiguration {
      * @return 想定远程服务
      */
     @Bean
+    @ConditionalOnMissingBean(DifyTextApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "text-key")
     public DifyTextApi difyTextApi() {
         return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), objectMapper, difyInterceptor(difyProperties.getTextKey()), DifyTextApi.class);
@@ -63,6 +67,7 @@ public class DifyApiAutoConfiguration {
      * @return 想定远程服务
      */
     @Bean
+    @ConditionalOnMissingBean(DifyWorkflowApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "workflow-key")
     public DifyWorkflowApi difyWorkflowApi() {
         return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), objectMapper, difyInterceptor(difyProperties.getWorkflowKey()), DifyWorkflowApi.class);
@@ -74,6 +79,7 @@ public class DifyApiAutoConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnMissingBean(DifySseApi.class)
     public DifySseApi difySseApi() {
         return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), objectMapper, null, DifySseApi.class);
     }

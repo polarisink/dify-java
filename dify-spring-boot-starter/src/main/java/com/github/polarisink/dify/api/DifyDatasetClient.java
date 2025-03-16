@@ -1,7 +1,7 @@
 package com.github.polarisink.dify.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.polarisink.dify.DifyPageResponse;
+import com.github.polarisink.dify.response.DifyPageResponse;
 import com.github.polarisink.dify.request.*;
 import com.github.polarisink.dify.response.*;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.net.URI;
 
 import static com.github.polarisink.dify.api.DifyRoutes.*;
 
-public class DifyDatasetClient extends BaseDifyClient implements DifyDatasetApi {
+public class DifyDatasetClient extends AbstractDifyRestClient implements DifyDatasetApi {
 
     @Builder
     public DifyDatasetClient(String baseUrl, String token, ObjectMapper objectMapper) {

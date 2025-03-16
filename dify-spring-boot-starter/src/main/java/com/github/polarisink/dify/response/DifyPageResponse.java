@@ -1,4 +1,4 @@
-package com.github.polarisink.dify;
+package com.github.polarisink.dify.response;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 

@@ -1,4 +1,4 @@
-package com.github.polarisink.dify;
+package com.github.polarisink.dify.core;
 
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;

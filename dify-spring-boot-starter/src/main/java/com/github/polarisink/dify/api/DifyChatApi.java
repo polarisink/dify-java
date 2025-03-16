@@ -1,6 +1,6 @@
 package com.github.polarisink.dify.api;
 
-import com.github.polarisink.dify.DifyPageResponse;
+import com.github.polarisink.dify.response.DifyPageResponse;
 import com.github.polarisink.dify.request.DifyChatRequest;
 import com.github.polarisink.dify.request.DifyConversionRequest;
 import com.github.polarisink.dify.request.DifyUserRequest;

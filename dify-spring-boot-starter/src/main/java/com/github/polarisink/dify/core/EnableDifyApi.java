@@ -1,4 +1,4 @@
-package com.github.polarisink.dify;
+package com.github.polarisink.dify.core;
 
 import org.springframework.context.annotation.Import;
 

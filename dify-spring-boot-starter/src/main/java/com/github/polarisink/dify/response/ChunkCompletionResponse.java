@@ -1,6 +1,4 @@
-package com.github.polarisink.dify;
-
-import com.github.polarisink.dify.response.DifyUsage;
+package com.github.polarisink.dify.response;
 
 public record ChunkCompletionResponse(
         String task_id,

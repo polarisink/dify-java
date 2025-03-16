@@ -1,4 +1,4 @@
-package com.github.polarisink.dify;
+package com.github.polarisink.dify.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class HttpInterfaceUtil {
     }
 
     /**
-     * 通过restClient创建代理服务
+     * 通过WebClient创建代理服务
      *
      * @param baseUrl      基本地址
      * @param objectMapper jackson
