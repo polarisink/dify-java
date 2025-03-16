@@ -3,18 +3,34 @@ package com.github.polarisink.dify.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.polarisink.dify.request.DifyUserRequest;
 import com.github.polarisink.dify.request.DifyWorkflowRequest;
+import com.github.polarisink.dify.request.WorkflowRequest;
 import com.github.polarisink.dify.response.*;
 import lombok.Builder;
 import org.springframework.core.io.Resource;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
-public class DifyWorkflowClient extends AbstractDifyRestClient implements DifyWorkflowApi {
+/**
+ * dify工作流客户端，支持全部功能
+ */
+public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkflowApi, DifyWorkflowSseApi {
 
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
 
+    @Builder(builderMethodName = "customBuilder")
+    public DifyWorkflowClient(RestClient restClient, WebClient webClient) {
+        super(restClient, webClient);
+        _difyFileUploadClient = new _DifyFileUploadClient(restClient);
+        _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
+    }
+
     @Builder
-    public DifyWorkflowClient(String baseUrl, String token, ObjectMapper objectMapper) {
-        super(baseUrl, token, objectMapper);
+    public DifyWorkflowClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor, ExchangeFilterFunction filter) {
+        super(baseUrl, token, objectMapper, interceptor, filter);
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
     }
@@ -52,5 +68,13 @@ public class DifyWorkflowClient extends AbstractDifyRestClient implements DifyWo
     @Override
     public DifyParameter parameters() {
         return _difyInfoParameterClient.parameters();
+    }
+
+    @Override
+    public Flux<WorkflowRequest.WorkflowEvent> runWorkflowSse(DifyWorkflowRequest request) {
+        if (webClient == null) {
+            return Flux.error(new IllegalArgumentException("webClient is not present"));
+        }
+        return webClient.post().bodyValue(request).retrieve().bodyToFlux(WorkflowRequest.WorkflowEvent.class);
     }
 }

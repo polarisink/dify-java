@@ -12,24 +12,40 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
 
 import java.net.URI;
 
 import static com.github.polarisink.dify.api.DifyRoutes.*;
 
+/**
+ * 聊天客户端
+ */
 @Slf4j
-public class DifyChatClient extends AbstractDifyRestClient implements DifyChatApi {
+public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, DifyChatSseApi {
 
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
     private final _DifyTextToAudioClient _difyTextToAudioClient;
 
+    @Builder(builderMethodName = "customBuilder")
+    public DifyChatClient(RestClient restClient, WebClient webClient) {
+        super(restClient, webClient);
+        _difyFileUploadClient = new _DifyFileUploadClient(restClient);
+        _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
+        _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
+    }
+
     @Builder
-    public DifyChatClient(String baseUrl, String token, ObjectMapper objectMapper) {
-        super(baseUrl, token, objectMapper);
+    public DifyChatClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor, ExchangeFilterFunction filter) {
+        super(baseUrl, token, objectMapper, interceptor, filter);
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
         _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
@@ -112,5 +128,13 @@ public class DifyChatClient extends AbstractDifyRestClient implements DifyChatAp
     @Override
     public Resource textToAudio(String messageId, String text, String user) {
         return _difyTextToAudioClient.textToAudio(messageId, text, user);
+    }
+
+    @Override
+    public Flux<ChunkCompletionResponse> chatSse(DifyChatRequest request) {
+        if (webClient == null) {
+            return Flux.error(new IllegalArgumentException("webClient is not present"));
+        }
+        return webClient.post().uri(COMPLETION_MESSAGES).bodyValue(request).retrieve().bodyToFlux(ChunkCompletionResponse.class);
     }
 }

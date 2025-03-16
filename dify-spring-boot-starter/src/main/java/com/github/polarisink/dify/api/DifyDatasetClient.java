@@ -7,19 +7,31 @@ import lombok.Builder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
 import static com.github.polarisink.dify.api.DifyRoutes.*;
 
-public class DifyDatasetClient extends AbstractDifyRestClient implements DifyDatasetApi {
+/**
+ * dify知识库客户端
+ */
+public class DifyDatasetClient extends AbstractDifyClient implements DifyDatasetApi {
+
+    @Builder(builderMethodName = "customBuilder")
+    public DifyDatasetClient(RestClient restClient, WebClient webClient){
+        super(restClient, webClient);
+    }
 
     @Builder
-    public DifyDatasetClient(String baseUrl, String token, ObjectMapper objectMapper) {
-        super(baseUrl, token, objectMapper);
+    public DifyDatasetClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor, ExchangeFilterFunction filter) {
+        super(baseUrl, token, objectMapper,interceptor,filter);
     }
 
     @Override

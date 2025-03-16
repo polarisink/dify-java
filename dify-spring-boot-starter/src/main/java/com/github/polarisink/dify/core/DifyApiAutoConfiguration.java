@@ -79,9 +79,9 @@ public class DifyApiAutoConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(DifySseApi.class)
-    public DifySseApi difySseApi() {
-        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), objectMapper, null, DifySseApi.class);
+    @ConditionalOnMissingBean(DifyChatSseApi.class)
+    public DifyChatSseApi difySseApi() {
+        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), objectMapper, null, DifyChatSseApi.class);
     }
 
 

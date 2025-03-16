@@ -7,17 +7,33 @@ import com.github.polarisink.dify.request.DifyWorkflowRequest;
 import com.github.polarisink.dify.response.*;
 import lombok.Builder;
 import org.springframework.core.io.Resource;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
 
-public class DifyTextClient extends AbstractDifyRestClient implements DifyTextApi {
+/**
+ * dify文本客户端
+ */
+public class DifyTextClient extends AbstractDifyClient implements DifyTextApi {
 
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
     private final _DifyTextToAudioClient _difyTextToAudioClient;
     private final _DifyFeedbackClient _difyFeedbackClient;
 
+    @Builder(builderMethodName = "customBuilder")
+    public DifyTextClient(RestClient restClient, WebClient webClient){
+        super(restClient, webClient);
+        _difyFileUploadClient = new _DifyFileUploadClient(restClient);
+        _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
+        _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
+        _difyFeedbackClient = new _DifyFeedbackClient(restClient);
+    }
+
     @Builder
-    public DifyTextClient(String baseUrl, String token, ObjectMapper objectMapper) {
-        super(baseUrl, token, objectMapper);
+    public DifyTextClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor, ExchangeFilterFunction filter) {
+        super(baseUrl, token, objectMapper, interceptor, filter);
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
         _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
