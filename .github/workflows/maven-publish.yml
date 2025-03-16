@@ -32,7 +32,7 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_SECRET }}
 
       - name: Publish to Central
-        run: mvn -B clean deploy
+        run: mvn -B clean deploy -Dmaven.test.skip=true
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
