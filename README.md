@@ -22,6 +22,7 @@ Dify API 密钥（从平台控制台获取）
 
 ## 快速开始
 ### 1. 添加依赖
+- maven包上架还未完成
 ```xml
 <!-- Spring Web & HTTP Interface -->
 <dependency>
@@ -30,6 +31,9 @@ Dify API 密钥（从平台控制台获取）
     <version>latest</version>
 </dependency>
 ```
+- 项目基于webflux编写，需要注意处理和web的冲突
+- 如果是普通spring-web项目，则在Spring主类中添加`@SpringBootApplication(exclude = WebFluxAutoConfiguration.class)`
+- 如果是spring-web项目则正常使用
 
 ### 2. 使用
 
