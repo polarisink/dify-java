@@ -102,4 +102,9 @@ class ChatController {
 
 ---
 
+## 任务列表
+- [ ] spring-boot-starter上架maven中心仓库
+- [ ] sse相关api完善及测试
+- [ ] 测试用例的编写
+
 完整代码示例可参考测试程序，建议结合 [Dify](https://docs.dify.ai/zh-hans) 官方文档进行调试。
