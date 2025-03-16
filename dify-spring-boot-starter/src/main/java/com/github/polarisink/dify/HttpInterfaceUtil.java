@@ -45,7 +45,7 @@ public class HttpInterfaceUtil {
             list.removeIf(c -> c.getClass().getName().equals(MappingJackson2HttpMessageConverter.class.getName()));
             MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
             converter.setObjectMapper(objectMapper);
-            list.addFirst(converter);
+            list.add(0,converter);
         });
         if (interceptor != null) {
             builder.requestInterceptor(interceptor);
