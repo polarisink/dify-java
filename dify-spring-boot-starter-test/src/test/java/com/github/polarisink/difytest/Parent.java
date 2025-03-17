@@ -1,4 +1,4 @@
-package com.github.polarisink.dify;
+package com.github.polarisink.difytest;
 
 import lombok.Builder;
 import lombok.ToString;

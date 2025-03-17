@@ -1,5 +1,6 @@
-package com.github.polarisink.dify.api;
+package com.github.polarisink.difytest.api;
 
+import com.github.polarisink.dify.api.DifyChatClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 
