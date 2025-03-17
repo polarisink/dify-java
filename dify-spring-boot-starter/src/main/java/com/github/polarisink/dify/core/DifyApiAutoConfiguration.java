@@ -106,12 +106,23 @@ public class DifyApiAutoConfiguration {
     /**
      * 声明流调用的api
      *
-     * @return
+     * @return client
      */
     @Bean
     @ConditionalOnMissingBean(DifyChatSseApi.class)
     public DifyChatSseApi difySseApi() {
         return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), difyProperties.getChatKey(), objectMapper, filter, DifyChatSseApi.class);
+    }
+
+    /**
+     * 声明流调用知识库的api
+     *
+     * @return client
+     */
+    @Bean
+    @ConditionalOnMissingBean(DifyWorkflowSseApi.class)
+    public DifyWorkflowSseApi difyWorkflowSseApi() {
+        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), difyProperties.getChatKey(), objectMapper, filter, DifyWorkflowSseApi.class);
     }
 
 }

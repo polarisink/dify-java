@@ -17,6 +17,15 @@ abstract class AbstractDifyClient {
     protected final WebClient webClient;
 
 
+    public AbstractDifyClient(RestClient restClient, WebClient webClient) {
+        this.restClient = restClient;
+        if (restClient == null) {
+            throw new IllegalArgumentException("restClient can not be null");
+        }
+        //不校验webclient是因为大部分情况webclient用不上，当调用webclient的时候会判空
+        this.webClient = webClient;
+    }
+
     /**
      * 构造方法
      *

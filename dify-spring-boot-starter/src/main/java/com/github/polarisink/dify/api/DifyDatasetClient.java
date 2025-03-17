@@ -24,7 +24,13 @@ import static com.github.polarisink.dify.api.DifyRoutes.*;
  */
 public class DifyDatasetClient extends AbstractDifyClient implements DifyDatasetApi {
 
-    @Builder
+
+    @Builder(builderClassName = "DifyDatasetClientCustomBuilder", builderMethodName = "customBuilder")
+    public DifyDatasetClient(RestClient restClient, WebClient webClient) {
+        super(restClient, webClient);
+    }
+
+    @Builder(builderClassName = "DifyDatasetClientBuilder")
     public DifyDatasetClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor, ExchangeFilterFunction filter) {
         super(baseUrl, token, objectMapper, interceptor, filter);
     }

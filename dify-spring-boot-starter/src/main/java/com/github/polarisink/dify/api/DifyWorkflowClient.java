@@ -7,7 +7,9 @@ import com.github.polarisink.dify.response.*;
 import lombok.Builder;
 import org.springframework.core.io.Resource;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 /**
@@ -18,7 +20,14 @@ public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkfl
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
 
-    @Builder
+    @Builder(builderClassName = "DifyWorkflowClientCustomBuilder", builderMethodName = "customBuilder")
+    public DifyWorkflowClient(RestClient restClient, WebClient webClient) {
+        super(restClient, webClient);
+        _difyFileUploadClient = new _DifyFileUploadClient(restClient);
+        _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
+    }
+
+    @Builder(builderClassName = "DifyWorkflowClientBuilder")
     public DifyWorkflowClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor, ExchangeFilterFunction filter) {
         super(baseUrl, token, objectMapper, interceptor, filter);
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
