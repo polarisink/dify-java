@@ -23,7 +23,7 @@ public class DifyTextClient extends AbstractDifyClient implements DifyTextApi {
     private final _DifyFeedbackClient _difyFeedbackClient;
 
     @Builder(builderMethodName = "customBuilder")
-    public DifyTextClient(RestClient restClient, WebClient webClient){
+    public DifyTextClient(RestClient restClient, WebClient webClient) {
         super(restClient, webClient);
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
