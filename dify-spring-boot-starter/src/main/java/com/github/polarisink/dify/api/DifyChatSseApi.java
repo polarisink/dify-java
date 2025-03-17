@@ -1,7 +1,7 @@
 package com.github.polarisink.dify.api;
 
 import com.github.polarisink.dify.request.DifyChatRequest;
-import com.github.polarisink.dify.response.ChunkCompletionResponse;
+import com.github.polarisink.dify.response.DifyChatSse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
@@ -21,6 +21,6 @@ public interface DifyChatSseApi {
      * @return flux结果
      */
     @PostExchange(value = COMPLETION_MESSAGES, contentType = MediaType.TEXT_EVENT_STREAM_VALUE)
-    Flux<ChunkCompletionResponse> chatSse(@RequestBody DifyChatRequest request);
+    Flux<DifyChatSse> chatSse(@RequestBody DifyChatRequest request);
 
   }

@@ -131,10 +131,10 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
     }
 
     @Override
-    public Flux<ChunkCompletionResponse> chatSse(DifyChatRequest request) {
+    public Flux<DifyChatSse> chatSse(DifyChatRequest request) {
         if (webClient == null) {
             return Flux.error(new IllegalArgumentException("webClient is not present"));
         }
-        return webClient.post().uri(COMPLETION_MESSAGES).bodyValue(request).retrieve().bodyToFlux(ChunkCompletionResponse.class);
+        return webClient.post().uri(COMPLETION_MESSAGES).bodyValue(request).retrieve().bodyToFlux(DifyChatSse.class);
     }
 }

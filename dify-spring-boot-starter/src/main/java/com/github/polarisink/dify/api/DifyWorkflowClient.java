@@ -3,7 +3,6 @@ package com.github.polarisink.dify.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.polarisink.dify.request.DifyUserRequest;
 import com.github.polarisink.dify.request.DifyWorkflowRequest;
-import com.github.polarisink.dify.request.WorkflowRequest;
 import com.github.polarisink.dify.response.*;
 import lombok.Builder;
 import org.springframework.core.io.Resource;
@@ -71,10 +70,10 @@ public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkfl
     }
 
     @Override
-    public Flux<WorkflowRequest.WorkflowEvent> runWorkflowSse(DifyWorkflowRequest request) {
+    public Flux<DifyWorkflowSse> runWorkflowSse(DifyWorkflowRequest request) {
         if (webClient == null) {
             return Flux.error(new IllegalArgumentException("webClient is not present"));
         }
-        return webClient.post().bodyValue(request).retrieve().bodyToFlux(WorkflowRequest.WorkflowEvent.class);
+        return webClient.post().bodyValue(request).retrieve().bodyToFlux(DifyWorkflowSse.class);
     }
 }

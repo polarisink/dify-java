@@ -1,7 +1,7 @@
 package com.github.polarisink.dify.api;
 
 import com.github.polarisink.dify.request.DifyWorkflowRequest;
-import com.github.polarisink.dify.request.WorkflowRequest;
+import com.github.polarisink.dify.response.DifyWorkflowSse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
@@ -20,5 +20,5 @@ public interface DifyWorkflowSseApi {
      * @return 结果
      */
     @PostExchange(value = RUN_WORKFLOW, contentType = MediaType.TEXT_EVENT_STREAM_VALUE)
-    Flux<WorkflowRequest.WorkflowEvent> runWorkflowSse(@RequestBody DifyWorkflowRequest request);
+    Flux<DifyWorkflowSse> runWorkflowSse(@RequestBody DifyWorkflowRequest request);
 }
