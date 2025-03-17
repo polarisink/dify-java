@@ -16,22 +16,6 @@ abstract class AbstractDifyClient {
     protected final RestClient restClient;
     protected final WebClient webClient;
 
-    /**
-     * 自定义构造方法
-     * <p>
-     * 当下面的方法不够用的时候可以自定义进行使用
-     *
-     * @param restClient restClient
-     * @param webClient  webClient
-     */
-    public AbstractDifyClient(RestClient restClient, WebClient webClient) {
-        if (restClient == null) {
-            throw new IllegalArgumentException("restClient can not be null");
-        }
-        this.restClient = restClient;
-        //webclient不做校验，因为只有少数接口使用webclient
-        this.webClient = webClient;
-    }
 
     /**
      * 构造方法

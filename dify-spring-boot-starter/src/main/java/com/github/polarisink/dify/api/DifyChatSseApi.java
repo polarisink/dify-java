@@ -23,4 +23,4 @@ public interface DifyChatSseApi {
     @PostExchange(value = COMPLETION_MESSAGES, contentType = MediaType.TEXT_EVENT_STREAM_VALUE)
     Flux<DifyChatSse> chatSse(@RequestBody DifyChatRequest request);
 
-  }
+}

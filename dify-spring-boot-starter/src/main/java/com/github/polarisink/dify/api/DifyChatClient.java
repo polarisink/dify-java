@@ -15,9 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
@@ -34,14 +32,6 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
     private final _DifyTextToAudioClient _difyTextToAudioClient;
-
-    @Builder(builderMethodName = "customBuilder")
-    public DifyChatClient(RestClient restClient, WebClient webClient) {
-        super(restClient, webClient);
-        _difyFileUploadClient = new _DifyFileUploadClient(restClient);
-        _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
-        _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
-    }
 
     @Builder
     public DifyChatClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor, ExchangeFilterFunction filter) {
