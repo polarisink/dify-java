@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 class DifyChatClientTest {
     @Test
     void build() {
-        DifyChatClient build = DifyChatClient.builder().baseUrl("http://").token("sasa").build();
+        DifyDatasetClient build = DifyDatasetClient.builder().baseUrl("http://").token("sasa").build();
+        System.out.println();
         //DifyChatClient build1 = DifyChatClient.customBuilder().restClient(RestClient.create()).build();
 
     }
