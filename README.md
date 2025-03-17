@@ -40,7 +40,6 @@ Dify API 密钥（从平台控制台获取）
 ```
 
 - 项目基于webflux编写，需要注意处理和web的冲突
-- 如果是普通spring-web项目，则在Spring主类中添加`@SpringBootApplication(exclude = WebFluxAutoConfiguration.class)`
 - 如果是spring-web项目则正常使用
 - 如果在非spring环境中使用则不能使用api系列接口，只能手动构建DifyXXXClient使用
 
@@ -63,7 +62,6 @@ dify:
 - 在业务中进行使用
 
 ```java
-
 @RequestMapping("/dify")
 @RestController
 class ChatController {
@@ -84,8 +82,6 @@ class ChatController {
 - 手动构建`DifyChatClient`进行调用，此时不能再使用`DifyChatApi`等系列api，而且client系列
 
 ```java
-import java.util.concurrent.ConcurrentHashMap;
-
 @RequestMapping("/dify")
 @RestController
 class ChatController {
@@ -93,11 +89,11 @@ class ChatController {
     private String baseUrl = "https://api.dify.ai/v1";
     private String token = "token";
     //使用map维护多个不同的token
-    private static final Map<String, Map<String, DifyChatClient>> chatMap = new ConcurrentHashMap<>();
+    private static final  Map<String, DifyChatClient> chatMap = new ConcurrentHashMap<>();
 
     @GetMapping("/chat")
     public DifyChat chat(@RequestBody DifyChatRequest paramMessage) {
-        DifyChatClient difyChatClient = chatMap.computeIfAbsent(baseUrl, baseUrl -> new ConcurrentHashMap<>()).computeIfAbsent(token, k -> DifyChatClient.builder().baseUrl(baseUrl).token(token).build());
+        DifyChatClient difyChatClient = chatMap.computeIfAbsent(token, k -> DifyChatClient.builder().baseUrl(baseUrl).token(token).build());
         return difyChatClient.chat(paramMessage);
     }
 }
