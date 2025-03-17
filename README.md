@@ -58,10 +58,11 @@ dify:
   workflow-key: app-xxxxxxxxxx  # 从Dify控制台获取
 ```
 
-- 在SpringBoot主类启用`@EnableDifyApi`
 - 在业务中进行使用
 
 ```java
+//启用dify自动配置
+@EnableDifyApi
 @RequestMapping("/dify")
 @RestController
 class ChatController {
