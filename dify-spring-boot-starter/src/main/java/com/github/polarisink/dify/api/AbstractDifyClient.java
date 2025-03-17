@@ -1,22 +1,17 @@
 package com.github.polarisink.dify.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpHeaders;
+import com.github.polarisink.dify.core.HttpInterfaceUtil;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
-import org.springframework.http.codec.json.Jackson2JsonEncoder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import static com.github.polarisink.dify.DifyConsts.KEY_PREFIX;
 
 /**
  * dify基础client
  */
 abstract class AbstractDifyClient {
+    private static final String KEY_PREFIX = "Bearer ";
 
     protected final RestClient restClient;
     protected final WebClient webClient;
@@ -62,28 +57,7 @@ abstract class AbstractDifyClient {
         }
         //token有头就不处理，否则加一个头
         String authorization = token.startsWith(KEY_PREFIX) ? token : KEY_PREFIX + token;
-        RestClient.Builder restClientBuilder = RestClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.AUTHORIZATION, authorization);
-        WebClient.Builder webClientBuilder = WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.AUTHORIZATION, authorization);
-        if (objectMapper != null) {
-            restClientBuilder.messageConverters(list -> {
-                list.removeIf(c -> c.getClass().getName().equals(MappingJackson2HttpMessageConverter.class.getName()));
-                MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-                converter.setObjectMapper(objectMapper);
-                list.add(0, converter);
-            });
-            ExchangeStrategies build = ExchangeStrategies.builder().codecs(configurer -> {
-                configurer.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));
-                configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
-            }).build();
-            webClientBuilder.exchangeStrategies(build);
-        }
-        if (interceptor != null) {
-            restClientBuilder.requestInterceptor(interceptor);
-        }
-        if (filter != null) {
-            webClientBuilder.filter(filter);
-        }
-        this.restClient = restClientBuilder.build();
-        this.webClient = webClientBuilder.build();
+        this.restClient = HttpInterfaceUtil.createRestClient(baseUrl, authorization, objectMapper, interceptor);
+        this.webClient = HttpInterfaceUtil.createWebClient(baseUrl, authorization, objectMapper, filter);
     }
 }
