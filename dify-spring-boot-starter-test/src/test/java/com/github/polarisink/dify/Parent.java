@@ -13,14 +13,6 @@ public class Parent {
     private Integer sum;
     private String name;
 
-    public static b1 builder() {
-        return new b1();
-    }
-
-    public static b2 builder2() {
-        return new b2();
-    }
-
     @Builder(builderClassName = "b1")
     public Parent(Integer a, Integer b, Integer c, String name) {
         this.a = a;
@@ -34,5 +26,13 @@ public class Parent {
     public Parent(Integer sum, String name) {
         this.sum = sum;
         this.name = name;
+    }
+
+    public static b1 builder() {
+        return new b1();
+    }
+
+    public static b2 builder2() {
+        return new b2();
     }
 }

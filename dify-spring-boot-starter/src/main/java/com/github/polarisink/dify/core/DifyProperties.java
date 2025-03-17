@@ -1,17 +1,14 @@
 package com.github.polarisink.dify.core;
 
 import lombok.Data;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * dify基础配置
  */
 @Data
-@Configuration
 @ConfigurationProperties(prefix = "dify")
-public class DifyProperties implements InitializingBean {
+public class DifyProperties {
     /**
      * 地址
      */
@@ -33,10 +30,4 @@ public class DifyProperties implements InitializingBean {
      */
     private String workflowKey;
 
-    @Override
-    public void afterPropertiesSet() {
-        if (baseUrl == null || baseUrl.isBlank() || !baseUrl.startsWith("http://") || !baseUrl.endsWith("/v1")) {
-            throw new IllegalArgumentException("dify baseUrl is invalid");
-        }
-    }
 }

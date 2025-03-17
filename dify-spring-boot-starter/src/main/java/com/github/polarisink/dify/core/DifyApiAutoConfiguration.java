@@ -18,7 +18,7 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(DifyProperties.class)
-public class DifyApiAutoConfiguration {
+class DifyApiAutoConfiguration {
     private final DifyProperties difyProperties;
     private final ObjectMapper objectMapper;
     @Qualifier("difyInterceptor")
@@ -33,27 +33,6 @@ public class DifyApiAutoConfiguration {
         this.filter = filter;
     }
 
-    /**
-     * 默认拦截器
-     *
-     * @return interceptor
-     */
-    @Bean("difyInterceptor")
-    @ConditionalOnMissingBean(ClientHttpRequestInterceptor.class)
-    public ClientHttpRequestInterceptor difyInterceptor() {
-        return (request, body, execution) -> execution.execute(request, body);
-    }
-
-    /**
-     * 默认过滤器
-     *
-     * @return function
-     */
-    @Bean
-    @ConditionalOnMissingBean(ExchangeFilterFunction.class)
-    public ExchangeFilterFunction difyFilter() {
-        return (request, next) -> next.exchange(request);
-    }
 
     /**
      * dify聊天api
