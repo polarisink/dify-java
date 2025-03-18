@@ -17,7 +17,12 @@ abstract class AbstractDifyClient {
     protected final RestClient restClient;
     protected final WebClient webClient;
 
-
+    /**
+     * 自定义client方法
+     *
+     * @param restClient restClient
+     * @param webClient  webClient
+     */
     public AbstractDifyClient(RestClient restClient, WebClient webClient) {
         this.restClient = restClient;
         if (restClient == null) {

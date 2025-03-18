@@ -28,7 +28,7 @@ Dify API 密钥（从平台控制台获取）
 
 ### 1. 添加依赖
 
-- maven包上架还未完成
+- maven包上架还未完成，可以下载源码手动编译
 
 ```xml
 <!-- Spring Web & HTTP Interface -->
