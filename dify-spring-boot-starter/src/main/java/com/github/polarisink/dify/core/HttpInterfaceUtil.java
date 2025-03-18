@@ -21,6 +21,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  */
 @Slf4j
 public class HttpInterfaceUtil {
+
+    private static final String KEY_PREFIX = "Bearer ";
+
     /**
      * 创建RestClient
      *
@@ -107,5 +110,15 @@ public class HttpInterfaceUtil {
         WebClient webClient = createWebClient(baseUrl, token, objectMapper, function);
         // 构建 WebClient 并配置策略
         return HttpServiceProxyFactory.builderFor(WebClientAdapter.create(webClient)).build().createClient(clazz);
+    }
+
+    /**
+     * 处理token，看情况追加前缀
+     *
+     * @param token token
+     * @return 处理后的token
+     */
+    public static String resolveToken(String token) {
+        return token.startsWith(KEY_PREFIX) ? token : KEY_PREFIX + token;
     }
 }

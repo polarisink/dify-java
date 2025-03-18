@@ -10,6 +10,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 
+import static com.github.polarisink.dify.core.HttpInterfaceUtil.resolveToken;
+
 /**
  * dify-api配置
  */
@@ -31,7 +33,7 @@ public class DifyApiAutoConfiguration {
     @ConditionalOnMissingBean(DifyChatApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "chat-key")
     public DifyChatApi difyChatApi() {
-        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), difyProperties.getChatKey(), objectMapper, null, DifyChatApi.class);
+        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getChatKey()), objectMapper, null, DifyChatApi.class);
     }
 
     /**
@@ -43,7 +45,7 @@ public class DifyApiAutoConfiguration {
     @ConditionalOnMissingBean(DifyDatasetApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "dataset-key")
     public DifyDatasetApi difyDatasetApi() {
-        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), difyProperties.getDatasetKey(), objectMapper, null, DifyDatasetApi.class);
+        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getDatasetKey()), objectMapper, null, DifyDatasetApi.class);
     }
 
     /**
@@ -55,7 +57,7 @@ public class DifyApiAutoConfiguration {
     @ConditionalOnMissingBean(DifyTextApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "text-key")
     public DifyTextApi difyTextApi() {
-        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), difyProperties.getTextKey(), objectMapper, null, DifyTextApi.class);
+        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getTextKey()), objectMapper, null, DifyTextApi.class);
     }
 
     /**
@@ -67,7 +69,7 @@ public class DifyApiAutoConfiguration {
     @ConditionalOnMissingBean(DifyWorkflowApi.class)
     @ConditionalOnProperty(prefix = "dify", name = "workflow-key")
     public DifyWorkflowApi difyWorkflowApi() {
-        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), difyProperties.getWorkflowKey(), objectMapper, null, DifyWorkflowApi.class);
+        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getWorkflowKey()), objectMapper, null, DifyWorkflowApi.class);
     }
 
     /**
@@ -78,7 +80,7 @@ public class DifyApiAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(DifyChatSseApi.class)
     public DifyChatSseApi difySseApi() {
-        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), difyProperties.getChatKey(), objectMapper, null, DifyChatSseApi.class);
+        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getChatKey()), objectMapper, null, DifyChatSseApi.class);
     }
 
     /**
@@ -89,7 +91,7 @@ public class DifyApiAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(DifyWorkflowSseApi.class)
     public DifyWorkflowSseApi difyWorkflowSseApi() {
-        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), difyProperties.getChatKey(), objectMapper, null, DifyWorkflowSseApi.class);
+        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getChatKey()), objectMapper, null, DifyWorkflowSseApi.class);
     }
 
 }

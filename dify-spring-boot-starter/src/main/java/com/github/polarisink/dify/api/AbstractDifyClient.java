@@ -7,11 +7,12 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static com.github.polarisink.dify.core.HttpInterfaceUtil.resolveToken;
+
 /**
  * dify基础client
  */
 abstract class AbstractDifyClient {
-    private static final String KEY_PREFIX = "Bearer ";
 
     protected final RestClient restClient;
     protected final WebClient webClient;
@@ -49,7 +50,7 @@ abstract class AbstractDifyClient {
             throw new IllegalArgumentException("dify token can not be blank");
         }
         //token有头就不处理，否则加一个头
-        String authorization = token.startsWith(KEY_PREFIX) ? token : KEY_PREFIX + token;
+        String authorization = resolveToken(token);
         this.restClient = HttpInterfaceUtil.createRestClient(baseUrl, authorization, objectMapper, interceptor);
         this.webClient = HttpInterfaceUtil.createWebClient(baseUrl, authorization, objectMapper, filter);
     }
