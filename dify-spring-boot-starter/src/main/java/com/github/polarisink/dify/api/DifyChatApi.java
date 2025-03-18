@@ -61,7 +61,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param limit        一次请求返回多少条聊天记录，默认 20 条。
      */
     @GetExchange(MESSAGES)
-    DifyPageResponse<DifyMessage> history(@RequestParam String user, @RequestParam(value = "conversion_id", required = false) String conversionId, @RequestParam(value = "first_id", required = false) String firstId, @RequestParam(defaultValue = "20", required = false) int limit);
+    DifyPageResponse<DifyMessage> history(@RequestParam String user, @RequestParam(value = "conversion_id", required = false) String conversionId, @RequestParam(value = "first_id", required = false) String firstId, @RequestParam(defaultValue = "20", required = false) Integer limit);
 
 
     /**
@@ -72,8 +72,8 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      * @param limit  （选填）一次请求返回多少条记录，默认 20 条，最大 100 条，最小 1 条。
      * @param sortBy （选填）排序字段，默认 -updated_at(按更新时间倒序排列)；可选值：created_at, -created_at, updated_at, -updated_at；字段前面的符号代表顺序或倒序，-代表倒序
      */
-    @GetExchange(CONVERSIONS)
-    DifyPageResponse<DifyConversion> conversions(@RequestParam String user, @RequestParam(value = "last_id", required = false) String lastId, @RequestParam(defaultValue = "20", required = false) int limit, @RequestParam(value = "sort_by", required = false) String sortBy);
+    @GetExchange(CONVERSATIONS)
+    DifyPageResponse<DifyConversion> conversations(@RequestParam("user") String user, @RequestParam(value = "last_id", required = false) String lastId, @RequestParam(value = "limit", defaultValue = "20", required = false) Integer limit, @RequestParam(value = "sort_by", required = false) String sortBy);
 
     /**
      * 删除会话

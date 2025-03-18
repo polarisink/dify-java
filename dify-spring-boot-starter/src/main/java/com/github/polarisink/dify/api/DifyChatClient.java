@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
+import java.util.Optional;
 
 import static com.github.polarisink.dify.api.DifyRoutes.*;
 
@@ -68,15 +69,18 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
     }
 
     @Override
-    public DifyPageResponse<DifyMessage> history(String user, String conversionId, String firstId, int limit) {
+    public DifyPageResponse<DifyMessage> history(String user, String conversionId, String firstId, Integer limit) {
         URI uri = UriComponentsBuilder.fromPath(MESSAGES).queryParam("user", user).queryParam("conversion_id", conversionId).queryParam("first_id", firstId).queryParam("limit", limit).build().toUri();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
     }
 
     @Override
-    public DifyPageResponse<DifyConversion> conversions(String user, String lastId, int limit, String sortBy) {
-        URI uri = UriComponentsBuilder.fromPath(CONVERSIONS).queryParam("user", user).queryParam("last_id", lastId).queryParam("sort_by", sortBy).queryParam("limit", limit).build().toUri();
+    public DifyPageResponse<DifyConversion> conversations(String user, String lastId, Integer limit, String sortBy) {
+        if (user == null || user.isBlank()) {
+            throw new IllegalArgumentException("user can not be blank");
+        }
+        URI uri = UriComponentsBuilder.fromPath(CONVERSATIONS).queryParam("user", user).queryParamIfPresent("last_id", Optional.ofNullable(lastId)).queryParamIfPresent("sort_by", Optional.ofNullable(sortBy)).queryParamIfPresent("limit", Optional.ofNullable(limit)).build().toUri();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
     }

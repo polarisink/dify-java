@@ -57,7 +57,7 @@ interface DifyRoutes {
     String MESSAGES = "/messages";
 
     // 获取会话列表
-    String CONVERSIONS = "/conversions";
+    String CONVERSATIONS = "/conversations";
 
     // 删除会话
     String CONVERSION_BY_ID = "/conversations/{conversationId}";
