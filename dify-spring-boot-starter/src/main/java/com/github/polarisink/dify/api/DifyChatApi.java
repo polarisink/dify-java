@@ -114,7 +114,7 @@ public interface DifyChatApi extends _DifyFileUploadApi, _DifyInfoParameterApi, 
      *
      * @return icon
      */
-    @PostExchange(META)
+    @GetExchange(META)
     DifyMeta meta();
 
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
 import reactor.core.publisher.Flux;
 
+import static com.github.polarisink.dify.api.DifyRoutes.CHAT_MESSAGES;
 import static com.github.polarisink.dify.api.DifyRoutes.COMPLETION_MESSAGES;
 
 /**
@@ -20,7 +21,7 @@ public interface DifyChatSseApi {
      * @param request 请求
      * @return flux结果
      */
-    @PostExchange(value = COMPLETION_MESSAGES, contentType = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostExchange(value = CHAT_MESSAGES, contentType = MediaType.TEXT_EVENT_STREAM_VALUE)
     Flux<DifyChatSse> chatSse(@RequestBody DifyChatRequest request);
 
 }

@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
@@ -35,6 +36,8 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
     private final _DifyTextToAudioClient _difyTextToAudioClient;
+    private final _DifyFeedbackClient _difyFeedbackClient;
+    private final DifyChatSseClient difyChatSseClient;
 
     @Builder(builderClassName = "DifyChatClientCustomBuilder", builderMethodName = "customBuilder")
     public DifyChatClient(RestClient restClient, WebClient webClient) {
@@ -42,6 +45,8 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
         _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
+        _difyFeedbackClient = new _DifyFeedbackClient(restClient);
+        difyChatSseClient = new DifyChatSseClient(webClient);
     }
 
     @Builder(builderClassName = "DifyChatClientBuilder")
@@ -50,26 +55,34 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
         _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
+        _difyFeedbackClient = new _DifyFeedbackClient(restClient);
+        difyChatSseClient = new DifyChatSseClient(webClient);
     }
 
     @Override
-    public DifyChat chat(DifyChatRequest paramMessage) {
-        return restClient.post().uri(CHAT_MESSAGES).body(paramMessage).retrieve().body(DifyChat.class);
+    public DifyChat chat(DifyChatRequest chatRequest) {
+        Assert.notNull(chatRequest, "chatRequest can not be null");
+        return restClient.post().uri(CHAT_MESSAGES).body(chatRequest).retrieve().body(DifyChat.class);
     }
 
     @Override
     public DifyResult stopTask(String taskId, DifyUserRequest userRequest) {
+        Assert.hasText(taskId, "taskId can not be blank");
+        Assert.notNull(userRequest, "userRequest can not be null");
         return restClient.post().uri(STOP_CHAT_MESSAGES, taskId).body(userRequest).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyResult suggestions(String messageId, String user) {
+        Assert.hasText(messageId, "messageId can not be blank");
+        Assert.hasText(user, "user can not be blank");
         URI uri = UriComponentsBuilder.fromPath(MESSAGES_SUGGESTED).queryParam("user", user).buildAndExpand(messageId).toUri();
         return restClient.post().uri(uri).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyPageResponse<DifyMessage> history(String user, String conversionId, String firstId, Integer limit) {
+        Assert.hasText(user, "user can not be blank");
         URI uri = UriComponentsBuilder.fromPath(MESSAGES).queryParam("user", user).queryParam("conversion_id", conversionId).queryParam("first_id", firstId).queryParam("limit", limit).build().toUri();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
@@ -77,9 +90,7 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
 
     @Override
     public DifyPageResponse<DifyConversion> conversations(String user, String lastId, Integer limit, String sortBy) {
-        if (user == null || user.isBlank()) {
-            throw new IllegalArgumentException("user can not be blank");
-        }
+        Assert.hasText(user, "user can not be blank");
         URI uri = UriComponentsBuilder.fromPath(CONVERSATIONS).queryParam("user", user).queryParamIfPresent("last_id", Optional.ofNullable(lastId)).queryParamIfPresent("sort_by", Optional.ofNullable(sortBy)).queryParamIfPresent("limit", Optional.ofNullable(limit)).build().toUri();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
@@ -87,16 +98,22 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
 
     @Override
     public DifyResult deleteConversation(String conversationId, DifyUserRequest userRequest) {
+        Assert.hasText(conversationId, "conversationId can not be blank");
+        Assert.notNull(userRequest, "userRequest can not be null");
         return restClient.method(HttpMethod.DELETE).uri(CONVERSION_BY_ID, conversationId).body(userRequest).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyConversion updateConversionName(String conversationId, DifyConversionRequest request) {
+        Assert.hasText(conversationId, "conversationId can not be blank");
+        Assert.notNull(request, "request can not be null");
         return restClient.post().uri(CONVERSION_NAME, conversationId).body(request).retrieve().body(DifyConversion.class);
     }
 
     @Override
     public DifyAudioToText audioToText(Resource file, String user) {
+        Assert.notNull(file, "file can not be null");
+        Assert.hasText(user, "user can not be blank");
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>() {{
             add("file", file);
             add("user", user);
@@ -106,12 +123,12 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
 
     @Override
     public DifyMeta meta() {
-        return restClient.post().uri(META).retrieve().body(DifyMeta.class);
+        return restClient.get().uri(META).retrieve().body(DifyMeta.class);
     }
 
     @Override
     public DifyResult feedback(String messageId, DifyFeedbackRequest request) {
-        return null;
+        return _difyFeedbackClient.feedback(messageId, request);
     }
 
     @Override
@@ -131,14 +148,14 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
 
     @Override
     public Resource textToAudio(String messageId, String text, String user) {
+        Assert.hasText(messageId, "messageId can not be blank");
+        Assert.hasText(text, "text can not be blank");
+        Assert.hasText(user, "user can not be blank");
         return _difyTextToAudioClient.textToAudio(messageId, text, user);
     }
 
     @Override
     public Flux<DifyChatSse> chatSse(DifyChatRequest request) {
-        if (webClient == null) {
-            return Flux.error(new IllegalArgumentException("webClient is not present"));
-        }
-        return webClient.post().uri(COMPLETION_MESSAGES).bodyValue(request).retrieve().bodyToFlux(DifyChatSse.class);
+        return difyChatSseClient.chatSse(request);
     }
 }

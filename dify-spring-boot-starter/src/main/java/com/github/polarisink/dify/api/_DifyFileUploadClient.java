@@ -4,6 +4,7 @@ import com.github.polarisink.dify.response.DifyFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
@@ -19,6 +20,8 @@ class _DifyFileUploadClient implements _DifyFileUploadApi {
 
     @Override
     public DifyFile uploadFile(Resource file, String user) {
+        Assert.notNull(file, "file can not be null");
+        Assert.hasText(user, "user can not be blank");
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>() {{
             add("file", file);
             add("user", user);

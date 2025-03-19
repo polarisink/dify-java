@@ -2,6 +2,7 @@ package com.github.polarisink.dify.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.polarisink.dify.request.DifyFeedbackRequest;
+import com.github.polarisink.dify.request.DifyTextRequest;
 import com.github.polarisink.dify.request.DifyUserRequest;
 import com.github.polarisink.dify.request.DifyWorkflowRequest;
 import com.github.polarisink.dify.response.*;
@@ -11,16 +12,18 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
 /**
  * dify文本客户端
  */
-public class DifyTextClient extends AbstractDifyClient implements DifyTextApi {
+public class DifyTextClient extends AbstractDifyClient implements DifyTextApi, DifyTextSseApi {
 
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
     private final _DifyTextToAudioClient _difyTextToAudioClient;
     private final _DifyFeedbackClient _difyFeedbackClient;
+    private final DifyTextSseClient difyTextSseClient;
 
     @Builder(builderClassName = "DifyTextClientCustomBuilder", builderMethodName = "customBuilder")
     public DifyTextClient(RestClient restClient, WebClient webClient) {
@@ -29,6 +32,7 @@ public class DifyTextClient extends AbstractDifyClient implements DifyTextApi {
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
         _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
         _difyFeedbackClient = new _DifyFeedbackClient(restClient);
+        difyTextSseClient = new DifyTextSseClient(webClient);
     }
 
     @Builder(builderClassName = "DifyTextClientBuilder")
@@ -38,6 +42,7 @@ public class DifyTextClient extends AbstractDifyClient implements DifyTextApi {
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
         _difyTextToAudioClient = new _DifyTextToAudioClient(restClient);
         _difyFeedbackClient = new _DifyFeedbackClient(restClient);
+        difyTextSseClient = new DifyTextSseClient(webClient);
     }
 
     @Override
@@ -73,5 +78,10 @@ public class DifyTextClient extends AbstractDifyClient implements DifyTextApi {
     @Override
     public Resource textToAudio(String messageId, String text, String user) {
         return _difyTextToAudioClient.textToAudio(messageId, text, user);
+    }
+
+    @Override
+    public Flux<DifyTextSse> chatSse(DifyTextRequest request) {
+        return difyTextSseClient.chatSse(request);
     }
 }

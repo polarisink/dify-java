@@ -3,6 +3,7 @@ package com.github.polarisink.dify.request;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.util.Assert;
 
 import java.util.Collection;
 
@@ -32,9 +33,7 @@ public class DifyBasicSegment {
             @Override
             public DifyBasicSegment build() {
                 DifyBasicSegment build = self().build();
-                if (build.content == null || build.content.isBlank()) {
-                    throw new IllegalArgumentException("DifyBasicSegment#content can not be blank");
-                }
+                Assert.hasText(build.content, "content can not be blank");
                 return build;
             }
 

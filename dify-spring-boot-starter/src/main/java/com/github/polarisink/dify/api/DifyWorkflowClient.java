@@ -19,12 +19,14 @@ public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkfl
 
     private final _DifyFileUploadClient _difyFileUploadClient;
     private final _DifyInfoParameterClient _difyInfoParameterClient;
+    private final DifyWorkflowSseClient _difyWorkflowSseClient;
 
     @Builder(builderClassName = "DifyWorkflowClientCustomBuilder", builderMethodName = "customBuilder")
     public DifyWorkflowClient(RestClient restClient, WebClient webClient) {
         super(restClient, webClient);
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
+        _difyWorkflowSseClient = new DifyWorkflowSseClient(webClient);
     }
 
     @Builder(builderClassName = "DifyWorkflowClientBuilder")
@@ -32,6 +34,7 @@ public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkfl
         super(baseUrl, token, objectMapper, interceptor, filter);
         _difyFileUploadClient = new _DifyFileUploadClient(restClient);
         _difyInfoParameterClient = new _DifyInfoParameterClient(restClient);
+        _difyWorkflowSseClient = new DifyWorkflowSseClient(webClient);
     }
 
     @Override
@@ -71,9 +74,6 @@ public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkfl
 
     @Override
     public Flux<DifyWorkflowSse> runWorkflowSse(DifyWorkflowRequest request) {
-        if (webClient == null) {
-            return Flux.error(new IllegalArgumentException("webClient is not present"));
-        }
-        return webClient.post().bodyValue(request).retrieve().bodyToFlux(DifyWorkflowSse.class);
+        return _difyWorkflowSseClient.runWorkflowSse(request);
     }
 }

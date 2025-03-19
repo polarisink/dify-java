@@ -3,6 +3,7 @@ package com.github.polarisink.dify.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.Assert;
 
 @Getter
 @Builder
@@ -17,9 +18,7 @@ public final class DifyConversionRequest {
             @Override
             public DifyConversionRequest build() {
                 DifyConversionRequest build = super.build();
-                if (build.name == null || build.name.isBlank()) {
-                    throw new IllegalArgumentException("DifyConversionRequest#name can not be blank");
-                }
+                Assert.hasText(build.name, "name can not be blank");
                 return build;
             }
 

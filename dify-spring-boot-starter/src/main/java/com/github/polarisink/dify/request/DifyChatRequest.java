@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Map;
@@ -51,15 +52,10 @@ public final class DifyChatRequest {
             @Override
             public DifyChatRequest build() {
                 DifyChatRequest build = super.build();
-                if (build.query == null || build.query.isBlank()) {
-                    throw new IllegalArgumentException("DifyChatRequest#query can not be blank");
-                }
-                if (build.user==null || build.user.isBlank()){
-                    throw new IllegalArgumentException("DifyChatRequest#user can not be blank");
-                }
+                Assert.hasText(build.query, "query can not be blank");
+                Assert.hasText(build.user, "user can not be blank");
                 return build;
             }
-
         };
     }
 

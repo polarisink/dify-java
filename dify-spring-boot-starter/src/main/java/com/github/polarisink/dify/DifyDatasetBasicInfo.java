@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.util.Assert;
 
 /**
  * dify知识库基础属性
@@ -44,9 +45,7 @@ public class DifyDatasetBasicInfo {
             @Override
             public DifyDatasetBasicInfo build() {
                 DifyDatasetBasicInfo info = new DifyDatasetBasicInfo(this);
-                if (info.name == null || info.name.isBlank()) {
-                    throw new IllegalArgumentException("DifyDatasetBasicInfo#name can not be blank");
-                }
+                Assert.hasText(info.name, "name can not be blank");
                 return info;
             }
 

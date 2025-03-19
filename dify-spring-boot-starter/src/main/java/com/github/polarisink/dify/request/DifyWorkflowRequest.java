@@ -5,6 +5,7 @@ import com.github.polarisink.dify.enums.DifyResponseModeEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.util.Assert;
 
 import java.util.Map;
 
@@ -26,9 +27,8 @@ public class DifyWorkflowRequest {
             @Override
             public DifyWorkflowRequest build() {
                 DifyWorkflowRequest build = super.build();
-                if (build.responseMode == null) {
-                    throw new IllegalArgumentException("DifyWorkflowRequest#responseMode can not be null");
-                }
+                Assert.notNull(build.responseMode, "responseMode can not be null");
+                Assert.hasText(build.user, "user can not be blank");
                 return build;
             }
         };

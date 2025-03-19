@@ -6,6 +6,7 @@ import com.github.polarisink.dify.enums.DifyTransferMethodEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.util.Assert;
 
 @Getter
 @Builder
@@ -38,15 +39,9 @@ public final class DifyFileRequest {
             @Override
             public DifyFileRequest build() {
                 DifyFileRequest build = super.build();
-                if (build.transferMethod == null) {
-                    throw new IllegalArgumentException("DifyFileRequest#transferMethod can not be null");
-                }
-                if (build.transferMethod == DifyTransferMethodEnum.remote_url && (build.url == null || build.url.isBlank())) {
-                    throw new IllegalArgumentException("DifyFileRequest#url can not be null when transferMethod is remote_url");
-                }
-                if (build.transferMethod == DifyTransferMethodEnum.local_file && (build.uploadFileId == null || build.uploadFileId.isBlank())) {
-                    throw new IllegalArgumentException("DifyFileRequest#uploadFileId can not be null when transferMethod is local_file");
-                }
+                Assert.notNull(build.transferMethod, "transferMethod can not be null");
+                Assert.isTrue(build.transferMethod == DifyTransferMethodEnum.remote_url && (build.url == null || build.url.isBlank()), "url can not be null when transferMethod is remote_url");
+                Assert.isTrue(build.transferMethod == DifyTransferMethodEnum.local_file && (build.uploadFileId == null || build.uploadFileId.isBlank()), "uploadFileId can not be null when transferMethod is local_file");
                 return build;
             }
         };

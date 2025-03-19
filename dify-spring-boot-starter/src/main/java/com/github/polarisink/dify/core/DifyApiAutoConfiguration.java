@@ -3,7 +3,6 @@ package com.github.polarisink.dify.core;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.polarisink.dify.api.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,11 +14,9 @@ import static com.github.polarisink.dify.core.HttpInterfaceUtil.resolveToken;
 /**
  * dify-api配置
  */
-@Slf4j
 @RequiredArgsConstructor
 @EnableConfigurationProperties(DifyProperties.class)
 @Conditional(DifyValidationAutoConfiguration.EnableDifyApiCondition.class) // 条件控制
-
 public class DifyApiAutoConfiguration {
     private final DifyProperties difyProperties;
     private final ObjectMapper objectMapper;
@@ -37,15 +34,15 @@ public class DifyApiAutoConfiguration {
     }
 
     /**
-     * dify知识库api
+     * 声明流调用的chat-api
      *
-     * @return 想定远程服务
+     * @return client
      */
     @Bean
-    @ConditionalOnMissingBean(DifyDatasetApi.class)
-    @ConditionalOnProperty(prefix = "dify", name = "dataset-key")
-    public DifyDatasetApi difyDatasetApi() {
-        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getDatasetKey()), objectMapper, null, DifyDatasetApi.class);
+    @ConditionalOnProperty(prefix = "dify", name = "chat-key")
+    @ConditionalOnMissingBean(DifyChatSseApi.class)
+    public DifyChatSseApi difyChatSseApi() {
+        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getChatKey()), objectMapper, null, DifyChatSseApi.class);
     }
 
     /**
@@ -61,6 +58,18 @@ public class DifyApiAutoConfiguration {
     }
 
     /**
+     * 文本sse-api
+     *
+     * @return api
+     */
+    @Bean
+    @ConditionalOnMissingBean(DifyChatSseApi.class)
+    @ConditionalOnProperty(prefix = "dify", name = "text-key")
+    public DifyTextSseApi difyTextSseApi() {
+        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getTextKey()), objectMapper, null, DifyTextSseApi.class);
+    }
+
+    /**
      * dify流程api
      *
      * @return 想定远程服务
@@ -73,25 +82,27 @@ public class DifyApiAutoConfiguration {
     }
 
     /**
-     * 声明流调用的api
-     *
-     * @return client
-     */
-    @Bean
-    @ConditionalOnMissingBean(DifyChatSseApi.class)
-    public DifyChatSseApi difySseApi() {
-        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getChatKey()), objectMapper, null, DifyChatSseApi.class);
-    }
-
-    /**
      * 声明流调用知识库的api
      *
      * @return client
      */
     @Bean
+    @ConditionalOnProperty(prefix = "dify", name = "workflow-key")
     @ConditionalOnMissingBean(DifyWorkflowSseApi.class)
     public DifyWorkflowSseApi difyWorkflowSseApi() {
-        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getChatKey()), objectMapper, null, DifyWorkflowSseApi.class);
+        return HttpInterfaceUtil.createWebService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getWorkflowKey()), objectMapper, null, DifyWorkflowSseApi.class);
+    }
+
+    /**
+     * dify知识库api
+     *
+     * @return 想定远程服务
+     */
+    @Bean
+    @ConditionalOnMissingBean(DifyDatasetApi.class)
+    @ConditionalOnProperty(prefix = "dify", name = "dataset-key")
+    public DifyDatasetApi difyDatasetApi() {
+        return HttpInterfaceUtil.createRestService(difyProperties.getBaseUrl(), resolveToken(difyProperties.getDatasetKey()), objectMapper, null, DifyDatasetApi.class);
     }
 
 }
