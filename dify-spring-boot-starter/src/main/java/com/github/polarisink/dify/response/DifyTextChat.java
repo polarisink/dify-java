@@ -1,6 +1,6 @@
 package com.github.polarisink.dify.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
-public record DifyTextChat(String id, String answer, @JsonProperty("created_at") Integer createdAt) {
+public record DifyTextChat(String id, String answer, @JsonAlias("created_at") Integer createdAt) {
 }

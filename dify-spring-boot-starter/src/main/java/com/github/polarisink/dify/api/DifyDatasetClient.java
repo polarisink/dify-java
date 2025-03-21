@@ -1,5 +1,6 @@
 package com.github.polarisink.dify.api;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.polarisink.dify.request.*;
 import com.github.polarisink.dify.response.*;
@@ -37,7 +38,9 @@ public class DifyDatasetClient extends AbstractDifyClient implements DifyDataset
 
     @Override
     public DifyDocumentWrapper createDocByText(String datasetId, DifyDatasetTextRequest request) {
-        return restClient.post().uri(CREATE_DOC_BY_TEXT, datasetId).body(request).retrieve().body(DifyDocumentWrapper.class);
+        JsonNode body = restClient.post().uri(CREATE_DOC_BY_TEXT, datasetId).body(request).retrieve().body(JsonNode.class);
+        return null;
+        //return restClient.post().uri(CREATE_DOC_BY_TEXT, datasetId).body(request).retrieve().body(DifyDocumentWrapper.class);
     }
 
     @Override

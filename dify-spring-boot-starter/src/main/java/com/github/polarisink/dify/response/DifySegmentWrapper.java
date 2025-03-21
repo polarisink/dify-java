@@ -1,6 +1,6 @@
 package com.github.polarisink.dify.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.github.polarisink.dify.enums.DifyDocFormEnum;
 
 import java.util.Collection;
@@ -12,5 +12,5 @@ import java.util.Collection;
  * @param docForm form
  */
 public record DifySegmentWrapper(Collection<DifySegment> data,
-                                 @JsonProperty("doc_form") DifyDocFormEnum docForm) {
+                                 @JsonAlias("doc_form") DifyDocFormEnum docForm) {
 }

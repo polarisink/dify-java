@@ -6,14 +6,13 @@ import com.github.polarisink.dify.enums.DifyDocTypeEnum;
 import com.github.polarisink.dify.enums.DifyIndexTechniqueEnum;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import org.springframework.util.Assert;
 
 /**
  * dify知识库操作基类
  */
 @Getter
 @ToString
-@SuperBuilder
 public class DifyDatasetBasicRequest {
     /**
      * 文档类型
@@ -45,4 +44,16 @@ public class DifyDatasetBasicRequest {
      */
     @JsonProperty("process_rule")
     private DifyProcessRuleRequest processRule;
+
+    public DifyDatasetBasicRequest(DifyDocTypeEnum docType, Object docMetadata, DifyIndexTechniqueEnum indexingTechnique, DifyDocFormEnum docForm, String docLanguage, DifyProcessRuleRequest processRule) {
+        Assert.notNull(docForm, "docForm must not be null");
+        Assert.notNull(docLanguage, "docLanguage must not be null");
+        Assert.notNull(indexingTechnique, "indexingTechnique must not be null");
+        this.docType = docType;
+        this.docMetadata = docMetadata;
+        this.indexingTechnique = indexingTechnique;
+        this.docForm = docForm;
+        this.docLanguage = docLanguage;
+        this.processRule = processRule;
+    }
 }

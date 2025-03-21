@@ -1,20 +1,20 @@
 package com.github.polarisink.dify.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 public record DifyWorkflowLog(String id,
-                              @JsonProperty("workflow_run") DifyWorkflowData workflowRun,
-                              @JsonProperty("created_from") String createdFrom,
-                              @JsonProperty("created_by_role") String createdByRole,
-                              @JsonProperty("created_by_account") String createdByAccount,
-                              @JsonProperty("created_by_end_user") DifyUser createdByEndUser,
-                              @JsonProperty("created_at") DifyUser createdAt
+                              @JsonAlias("workflow_run") DifyWorkflowData workflowRun,
+                              @JsonAlias("created_from") String createdFrom,
+                              @JsonAlias("created_by_role") String createdByRole,
+                              @JsonAlias("created_by_account") String createdByAccount,
+                              @JsonAlias("created_by_end_user") DifyUser createdByEndUser,
+                              @JsonAlias("created_at") DifyUser createdAt
 
 ) {
     public record DifyUser(
             String id, String type,
-            @JsonProperty("is_anonymous") String anonymous,
-            @JsonProperty("session_id") String sessionId
+            @JsonAlias("is_anonymous") String anonymous,
+            @JsonAlias("session_id") String sessionId
     ) {
     }
 }

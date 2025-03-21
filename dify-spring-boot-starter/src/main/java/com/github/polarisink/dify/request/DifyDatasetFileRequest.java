@@ -1,6 +1,10 @@
 package com.github.polarisink.dify.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.polarisink.dify.enums.DifyDocFormEnum;
+import com.github.polarisink.dify.enums.DifyDocTypeEnum;
+import com.github.polarisink.dify.enums.DifyIndexTechniqueEnum;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -10,7 +14,6 @@ import lombok.experimental.SuperBuilder;
  */
 @ToString(callSuper = true)
 @Getter
-@SuperBuilder
 public final class DifyDatasetFileRequest extends DifyDatasetBasicRequest {
     /**
      * 源文档 ID（选填）
@@ -23,4 +26,9 @@ public final class DifyDatasetFileRequest extends DifyDatasetBasicRequest {
     @JsonProperty("original_document_id")
     private String originalDocumentId;
 
+    @Builder
+    public DifyDatasetFileRequest(DifyDocTypeEnum docType, Object docMetadata, DifyIndexTechniqueEnum indexingTechnique, DifyDocFormEnum docForm, String docLanguage, DifyProcessRuleRequest processRule,String originalDocumentId) {
+        super(docType, docMetadata, indexingTechnique, docForm, docLanguage, processRule);
+        this.originalDocumentId = originalDocumentId;
+    }
 }
