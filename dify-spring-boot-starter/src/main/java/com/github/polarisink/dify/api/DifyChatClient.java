@@ -22,7 +22,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
-import java.net.URI;
 import java.util.Optional;
 
 import static com.github.polarisink.dify.api.DifyRoutes.*;
@@ -76,14 +75,14 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
     public DifyResult suggestions(String messageId, String user) {
         Assert.hasText(messageId, "messageId can not be blank");
         Assert.hasText(user, "user can not be blank");
-        URI uri = UriComponentsBuilder.fromPath(MESSAGES_SUGGESTED).queryParam("user", user).buildAndExpand(messageId).toUri();
+        String uri = UriComponentsBuilder.fromUriString(MESSAGES_SUGGESTED).queryParam("user", user).buildAndExpand(messageId).toUriString();
         return restClient.post().uri(uri).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyPageResponse<DifyMessage> history(String user, String conversionId, String firstId, Integer limit) {
         Assert.hasText(user, "user can not be blank");
-        URI uri = UriComponentsBuilder.fromPath(MESSAGES).queryParam("user", user).queryParam("conversion_id", conversionId).queryParam("first_id", firstId).queryParam("limit", limit).build().toUri();
+        String uri = UriComponentsBuilder.fromUriString(MESSAGES).queryParam("user", user).queryParam("conversion_id", conversionId).queryParam("first_id", firstId).queryParam("limit", limit).build().toUriString();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
     }
@@ -91,7 +90,7 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
     @Override
     public DifyPageResponse<DifyConversion> conversations(String user, String lastId, Integer limit, String sortBy) {
         Assert.hasText(user, "user can not be blank");
-        URI uri = UriComponentsBuilder.fromPath(CONVERSATIONS).queryParam("user", user).queryParamIfPresent("last_id", Optional.ofNullable(lastId)).queryParamIfPresent("sort_by", Optional.ofNullable(sortBy)).queryParamIfPresent("limit", Optional.ofNullable(limit)).build().toUri();
+        String uri = UriComponentsBuilder.fromUriString(CONVERSATIONS).queryParam("user", user).queryParamIfPresent("last_id", Optional.ofNullable(lastId)).queryParamIfPresent("sort_by", Optional.ofNullable(sortBy)).queryParamIfPresent("limit", Optional.ofNullable(limit)).build().toUriString();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
     }
@@ -148,9 +147,6 @@ public class DifyChatClient extends AbstractDifyClient implements DifyChatApi, D
 
     @Override
     public Resource textToAudio(String messageId, String text, String user) {
-        Assert.hasText(messageId, "messageId can not be blank");
-        Assert.hasText(text, "text can not be blank");
-        Assert.hasText(user, "user can not be blank");
         return _difyTextToAudioClient.textToAudio(messageId, text, user);
     }
 

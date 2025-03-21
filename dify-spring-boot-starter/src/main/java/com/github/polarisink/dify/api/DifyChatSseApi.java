@@ -8,7 +8,6 @@ import org.springframework.web.service.annotation.PostExchange;
 import reactor.core.publisher.Flux;
 
 import static com.github.polarisink.dify.api.DifyRoutes.CHAT_MESSAGES;
-import static com.github.polarisink.dify.api.DifyRoutes.COMPLETION_MESSAGES;
 
 /**
  * dify流api

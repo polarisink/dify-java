@@ -1,7 +1,6 @@
 package com.github.polarisink.dify.api;
 
 import com.github.polarisink.dify.request.DifyTextRequest;
-import com.github.polarisink.dify.request.DifyWorkflowRequest;
 import com.github.polarisink.dify.response.DifyTextSse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;

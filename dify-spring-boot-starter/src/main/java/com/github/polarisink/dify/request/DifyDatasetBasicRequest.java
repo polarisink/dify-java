@@ -1,5 +1,6 @@
 package com.github.polarisink.dify.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.polarisink.dify.enums.DifyDocFormEnum;
 import com.github.polarisink.dify.enums.DifyDocTypeEnum;
@@ -40,9 +41,10 @@ public class DifyDatasetBasicRequest {
     @JsonProperty("doc_language")
     private String docLanguage;
     /**
-     * 处理规则
+     * 处理规则，为空就不传值
      */
     @JsonProperty("process_rule")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private DifyProcessRuleRequest processRule;
 
     public DifyDatasetBasicRequest(DifyDocTypeEnum docType, Object docMetadata, DifyIndexTechniqueEnum indexingTechnique, DifyDocFormEnum docForm, String docLanguage, DifyProcessRuleRequest processRule) {

@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
@@ -15,6 +16,9 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * springboot的http interface工具类
@@ -34,20 +38,44 @@ public class HttpInterfaceUtil {
      * @return RestClient
      */
     public static RestClient createRestClient(String baseUrl, String token, ObjectMapper objectMapper, ClientHttpRequestInterceptor interceptor) {
+        return createRestClient(baseUrl, token,
+                //消息处理器
+                messageConverters -> {
+                    if (objectMapper == null) {
+                        return;
+                    }
+                    messageConverters.removeIf(c -> c.getClass().getName().equals(MappingJackson2HttpMessageConverter.class.getName()));
+                    MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+                    converter.setObjectMapper(objectMapper);
+                    messageConverters.add(0, converter);
+                },
+                //拦截器
+                interceptors -> {
+                    if (interceptor != null) {
+                        interceptors.add(interceptor);
+                    }
+                });
+    }
+
+    /**
+     * 创建RestClient
+     *
+     * @param baseUrl              基础地址
+     * @param token                token
+     * @param configurer           消息处理器
+     * @param interceptorsConsumer 拦截器处理器
+     * @return restClient
+     */
+    public static RestClient createRestClient(String baseUrl, String token, Consumer<List<HttpMessageConverter<?>>> configurer, Consumer<List<ClientHttpRequestInterceptor>> interceptorsConsumer) {
         RestClient.Builder builder = RestClient.builder().baseUrl(baseUrl);
         if (token != null && !token.isBlank()) {
             builder.defaultHeader(HttpHeaders.AUTHORIZATION, token);
         }
-        if (objectMapper != null) {
-            builder.messageConverters(list -> {
-                list.removeIf(c -> c.getClass().getName().equals(MappingJackson2HttpMessageConverter.class.getName()));
-                MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-                converter.setObjectMapper(objectMapper);
-                list.add(0, converter);
-            });
+        if (configurer != null) {
+            builder.messageConverters(configurer);
         }
-        if (interceptor != null) {
-            builder.requestInterceptor(interceptor);
+        if (interceptorsConsumer != null) {
+            builder.requestInterceptors(interceptorsConsumer);
         }
         return builder.build();
     }

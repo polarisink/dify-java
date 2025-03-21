@@ -130,7 +130,11 @@ public interface DifyDatasetApi {
      * @return 分页结果
      */
     @GetExchange(PAGE_DOC)
-    DifyPageResponse<DifyDocument> pageDocument(@PathVariable("datasetId") String datasetId, DifyPageRequest request);
+    DifyPageResponse<DifyDocument> pageDocument(
+            //知识库和页码
+            @PathVariable("datasetId") String datasetId, @RequestParam(value = "page", required = false) Integer page,
+            //范围和关键字
+            @RequestParam(value = "limit", defaultValue = "20") Integer limit, @RequestParam(value = "keyword", required = false) String keyword);
 
     /**
      * 新增分段

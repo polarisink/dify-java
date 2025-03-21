@@ -9,6 +9,7 @@ import com.github.polarisink.dify.response.*;
 import lombok.Builder;
 import org.springframework.core.io.Resource;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -50,12 +51,15 @@ public class DifyTextClient extends AbstractDifyClient implements DifyTextApi, D
 
     @Override
     public DifyTextChat chat(DifyWorkflowRequest request) {
+        Assert.notNull(request, "request can not be null");
         return restClient.post().uri(COMPLETION_MESSAGES).body(request).retrieve().body(DifyTextChat.class);
     }
 
     @Override
     public DifyResult stopTask(String taskId, DifyUserRequest request) {
-        return restClient.post().uri(STOP_MESSAGES,taskId).body(request).retrieve().body(DifyResult.class);
+        Assert.hasText(taskId, "taskId can not be blank");
+        Assert.notNull(request, "request can not be null");
+        return restClient.post().uri(STOP_MESSAGES, taskId).body(request).retrieve().body(DifyResult.class);
     }
 
     @Override

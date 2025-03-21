@@ -8,13 +8,13 @@ import lombok.Builder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
-import java.net.URI;
 import java.util.Optional;
 
 import static com.github.polarisink.dify.api.DifyRoutes.*;
@@ -46,27 +46,31 @@ public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkfl
 
     @Override
     public DifyWorkflow runWorkflow(DifyWorkflowRequest request) {
+        Assert.notNull(request, "request can not be null");
         return restClient.post().uri(RUN_WORKFLOW).body(request).retrieve().body(DifyWorkflow.class);
     }
 
     @Override
     public DifyWorkflowData workflowInfo(String workflowId) {
-        return restClient.get().uri(WORKFLOW_INFO,workflowId).retrieve().body(DifyWorkflowData.class);
+        Assert.hasText(workflowId, "workflowId can not be blank");
+        return restClient.get().uri(WORKFLOW_INFO, workflowId).retrieve().body(DifyWorkflowData.class);
     }
 
     @Override
     public DifyResult stopTask(String taskId, DifyUserRequest userRequest) {
+        Assert.hasText(taskId, "taskId can not be blank");
+        Assert.notNull(userRequest, "userRequest can not be null");
         return restClient.post().uri(STOP_WORKFLOW, taskId).body(userRequest).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyPageResponse<DifyWorkflowLog> workflowLogs(String keyword, String status, Integer page, Integer limit) {
-        URI uri = UriComponentsBuilder.fromPath(WORKFLOW_LOGS)
+        String uri = UriComponentsBuilder.fromUriString(WORKFLOW_LOGS)
                 .queryParamIfPresent("keyword", Optional.ofNullable(keyword))
                 .queryParamIfPresent("status", Optional.ofNullable(status))
-                .queryParamIfPresent("page", Optional.ofNullable(page))
-                .queryParamIfPresent("limit", Optional.ofNullable(limit))
-                .build().toUri();
+                .queryParam("page", Optional.ofNullable(page).orElse(1))
+                .queryParam("limit", Optional.ofNullable(limit).orElse(20))
+                .build().toUri().toString();
         return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
         });
     }
