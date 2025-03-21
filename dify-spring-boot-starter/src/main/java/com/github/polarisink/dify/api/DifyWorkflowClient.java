@@ -5,12 +5,19 @@ import com.github.polarisink.dify.request.DifyUserRequest;
 import com.github.polarisink.dify.request.DifyWorkflowRequest;
 import com.github.polarisink.dify.response.*;
 import lombok.Builder;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
+
+import java.net.URI;
+import java.util.Optional;
+
+import static com.github.polarisink.dify.api.DifyRoutes.*;
 
 /**
  * dify工作流客户端，支持全部功能
@@ -39,22 +46,29 @@ public class DifyWorkflowClient extends AbstractDifyClient implements DifyWorkfl
 
     @Override
     public DifyWorkflow runWorkflow(DifyWorkflowRequest request) {
-        return null;
+        return restClient.post().uri(RUN_WORKFLOW).body(request).retrieve().body(DifyWorkflow.class);
     }
 
     @Override
     public DifyWorkflowData workflowInfo(String workflowId) {
-        return null;
+        return restClient.get().uri(WORKFLOW_INFO,workflowId).retrieve().body(DifyWorkflowData.class);
     }
 
     @Override
     public DifyResult stopTask(String taskId, DifyUserRequest userRequest) {
-        return null;
+        return restClient.post().uri(STOP_WORKFLOW, taskId).body(userRequest).retrieve().body(DifyResult.class);
     }
 
     @Override
     public DifyPageResponse<DifyWorkflowLog> workflowLogs(String keyword, String status, Integer page, Integer limit) {
-        return null;
+        URI uri = UriComponentsBuilder.fromPath(WORKFLOW_LOGS)
+                .queryParamIfPresent("keyword", Optional.ofNullable(keyword))
+                .queryParamIfPresent("status", Optional.ofNullable(status))
+                .queryParamIfPresent("page", Optional.ofNullable(page))
+                .queryParamIfPresent("limit", Optional.ofNullable(limit))
+                .build().toUri();
+        return restClient.get().uri(uri).retrieve().body(new ParameterizedTypeReference<>() {
+        });
     }
 
     @Override

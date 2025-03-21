@@ -15,6 +15,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.4.3</spring-boot.version>
+
     </properties>
 
 

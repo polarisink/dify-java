@@ -14,6 +14,9 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
+import static com.github.polarisink.dify.api.DifyRoutes.COMPLETION_MESSAGES;
+import static com.github.polarisink.dify.api.DifyRoutes.STOP_MESSAGES;
+
 /**
  * dify文本客户端
  */
@@ -47,12 +50,12 @@ public class DifyTextClient extends AbstractDifyClient implements DifyTextApi, D
 
     @Override
     public DifyTextChat chat(DifyWorkflowRequest request) {
-        return null;
+        return restClient.post().uri(COMPLETION_MESSAGES).body(request).retrieve().body(DifyTextChat.class);
     }
 
     @Override
     public DifyResult stopTask(String taskId, DifyUserRequest request) {
-        return null;
+        return restClient.post().uri(STOP_MESSAGES,taskId).body(request).retrieve().body(DifyResult.class);
     }
 
     @Override
