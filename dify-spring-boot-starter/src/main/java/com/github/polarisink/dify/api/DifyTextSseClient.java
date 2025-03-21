@@ -4,6 +4,7 @@ import com.github.polarisink.dify.request.DifyTextRequest;
 import com.github.polarisink.dify.response.DifyTextSse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.util.Assert;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
