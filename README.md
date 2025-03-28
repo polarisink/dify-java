@@ -4,7 +4,7 @@
 
 ## 项目概述
 
-本项目基于 Spring Boot 3.2.x 实现与 Dify 平台的 API 集成，采用 **HTTP Interface** 声明式客户端技术，提供简洁高效的 API
+本项目基于 Spring Boot 3.2.x 实现与 Dify 平台的 API 集成，采用 **HTTP Interface** 声明式客户端，提供简洁高效的 API
 调用方式。通过本框架，开发者可快速完成以下功能：
 
 - Dify 工作流执行接口封装
@@ -41,7 +41,7 @@ Dify API 密钥（从平台控制台获取）
 
 - 项目基于webflux编写，需要注意处理和web的冲突
 - 如果是spring-web项目则正常使用
-- 如果在非spring环境中使用则不能使用api系列接口，只能手动构建DifyXXXClient使用
+- 如果在非spring环境中，可以使用`HttpInterfaceUtil`创建XXXApi的代理类，或使用XXXClient的builder方法构建Client
 
 ### 2. 使用
 

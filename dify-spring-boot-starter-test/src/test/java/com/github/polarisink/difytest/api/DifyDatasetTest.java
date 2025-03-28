@@ -4,12 +4,8 @@ import com.github.polarisink.dify.api.DifyDatasetApi;
 import com.github.polarisink.dify.api.DifyDatasetClient;
 import com.github.polarisink.dify.core.DifyProperties;
 import com.github.polarisink.dify.core.HttpInterfaceUtil;
-import com.github.polarisink.dify.enums.DifyDocFormEnum;
-import com.github.polarisink.dify.enums.DifyIndexTechniqueEnum;
 import com.github.polarisink.dify.request.DifyDatasetCreateRequest;
-import com.github.polarisink.dify.request.DifyDatasetTextRequest;
 import com.github.polarisink.dify.response.DifyDataset;
-import com.github.polarisink.dify.response.DifyDocumentWrapper;
 import com.github.polarisink.dify.response.DifyPageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,15 +46,9 @@ class DifyDatasetTest {
     }
 
     @Test
-    void createDocByText() {
-        DifyDatasetCreateRequest build = DifyDatasetCreateRequest.builder().name("3").build();
-        DifyDataset dataset = difyDatasetClient.createDataset(build);
-        DifyDatasetTextRequest textRequest = DifyDatasetTextRequest.builder().text("你干嘛哎咳哟").docForm(DifyDocFormEnum.text_model).indexingTechnique(DifyIndexTechniqueEnum.economy).docLanguage("English").name(user).build();
-        try {
-            DifyDocumentWrapper docByText = difyDatasetClient.createDocByText("22f5b037-0aeb-4e85-b9ff-4ffc5eaa8827", textRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    void createDataset() {
+        DifyDatasetCreateRequest build = DifyDatasetCreateRequest.builder().name("ragflow").externalKnowledgeApiId("24f917fe-8182-4b4c-940a-3726240e240d").externalKnowledgeId("c3a0de860a2111f08a1f0242ac1b0006").build();
+        difyDatasetClient.createDataset(build);
     }
 
     @Test

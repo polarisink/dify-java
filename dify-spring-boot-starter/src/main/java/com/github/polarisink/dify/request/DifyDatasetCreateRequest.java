@@ -26,7 +26,8 @@ public final class DifyDatasetCreateRequest {
     /**
      * 权限（选填，默认 only_me）
      */
-    private DifyPermissionEnum permission;
+    @Builder.Default
+    private DifyPermissionEnum permission = DifyPermissionEnum.only_me;
     /**
      * Provider（选填，默认 vendor）
      */
